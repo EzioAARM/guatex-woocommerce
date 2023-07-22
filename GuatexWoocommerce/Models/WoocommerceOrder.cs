@@ -154,6 +154,11 @@
         public WoocommerceShipping Shipping { get; set; }
 
         /// <summary>
+        /// Items of the order
+        /// </summary>
+        public List<WoocommerceOrderLine> LineItems { get; set; }
+
+        /// <summary>
         /// Payment method ID
         /// </summary>
         public string PaymentMethod { get; set; }

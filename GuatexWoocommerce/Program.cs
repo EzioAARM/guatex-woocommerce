@@ -12,5 +12,40 @@ namespace GuatexWoocommerce
             ApplicationConfiguration.Initialize();
             Application.Run(new GuatexSendings());
         }
+
+        public static (string endpoint, string key, string secret) GetWoocommerceSettings()
+        {
+            Properties.Settings settings = Properties.Settings.Default;
+            string endpoint = settings["WoocommerceEndpoint"].ToString();
+            string key = settings["WoocomerceConsumerKey"].ToString();
+            string secret = settings["WoocommerceSecretKey"].ToString();
+
+            return (endpoint, key, secret);
+        }
+
+        public static (string host, string user, string password, string database) GetMysqlSettings()
+        {
+            Properties.Settings settings = Properties.Settings.Default;
+            string host = settings["MysqlHost"].ToString();
+            string user = settings["MysqlUser"].ToString();
+            string password = settings["MysqlPassword"].ToString();
+            string database = settings["MysqlDatabase"].ToString();
+
+            return (host, user, password, database);
+        }
+
+        public static (string urlMunicipios,
+            string municipiosUsername,
+            string municipiosPassword,
+            string codigoCobro) GetGuatexMunicipiosSettings()
+        {
+            Properties.Settings settings = Properties.Settings.Default;
+            string urlMunicipios = settings["UrlMunicipios"].ToString();
+            string municipiosUsername = settings["UsuarioMunicipios"].ToString();
+            string municipiosPassword = settings["PasswordMunicipios"].ToString();
+            string codigoCobro = settings["CodigoCobroMunicipios"].ToString();
+
+            return (urlMunicipios, municipiosUsername, municipiosPassword, codigoCobro);
+        }
     }
 }

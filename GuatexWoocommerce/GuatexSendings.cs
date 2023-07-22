@@ -1,7 +1,7 @@
 using GuatexWoocommerce.Models;
+using GuatexWoocommerce.WoocommerceApi;
+using System.Configuration;
 using System.Reflection;
-using WooCommerceNET;
-using WooCommerceNET.WooCommerce.v3;
 
 namespace GuatexWoocommerce
 {
@@ -68,9 +68,10 @@ namespace GuatexWoocommerce
             dgv_orders.Columns.AddRange(woocommerceOrderFields);
 
             Program._context = new DatabaseContext();
-            (string endpoint, string key, string secret) = GetWoocommerceSettings();
-            (string host, string user, string password, string database) = GetMysqlSettings();
-            (string urlMunicipios, string municipiosUsername, string municipiosPassword, string codigoCobro) = GetGuatexMunicipiosSettings();
+
+            (string endpoint, string key, string secret) = Program.GetWoocommerceSettings();
+            (string host, string user, string password, string database) = Program.GetMysqlSettings();
+            (string urlMunicipios, string municipiosUsername, string municipiosPassword, string codigoCobro) = Program.GetGuatexMunicipiosSettings();
             if (string.IsNullOrEmpty(endpoint) || string.IsNullOrEmpty(key) || string.IsNullOrEmpty(secret) ||
                 string.IsNullOrEmpty(host) || string.IsNullOrEmpty(user) || string.IsNullOrEmpty(password) ||
                 string.IsNullOrEmpty(database) || string.IsNullOrEmpty(urlMunicipios) || string.IsNullOrEmpty(municipiosUsername) ||
@@ -110,103 +111,20 @@ namespace GuatexWoocommerce
             }
         }
 
+        /// <summary>
+        /// Ejecuta una busqueda en Woocommerce
+        /// </summary>
         private async Task RunSearch()
         {
             try
             {
                 SetLoading(true, "Buscando...");
+                dgv_orders.Rows.Clear();
                 if (txt_order.Text.Length <= 2)
                 {
-                    dgv_orders.DataSource = null;
                     return;
                 }
-                (string endpoint, string key, string secret) = GetWoocommerceSettings();
-                if (string.IsNullOrEmpty(endpoint) || string.IsNullOrEmpty(key) || string.IsNullOrEmpty(secret))
-                {
-                    _ = MessageBox.Show("Debe configurar las credenciales de Woocommerce", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                RestAPI rest = new($"{endpoint}/wp-json/wc/v3/", key, secret);
-                WCObject wc = new(rest);
-
-                Console.WriteLine("Buscando");
-                Task<List<Order>> orderRequest = wc.Order.GetAll(new Dictionary<string, string>
-                    {
-                        { "search", txt_order.Text },
-                        { "per_page", "100" },
-                        { "order", "desc" },
-                        { "orderby", "date" }
-                    });
-                List<Order> requestedOrders = await orderRequest;
-                if (requestedOrders.Count == 0)
-                {
-                    dgv_orders.Rows.Clear();
-                }
-
-                List<WoocommerceOrder> orders = requestedOrders
-                    .Select(x => new WoocommerceOrder
-                    {
-                        Id = x.id,
-                        ParentId = x.parent_id,
-                        Number = x.number,
-                        OrderKey = x.order_key,
-                        CreatedVia = x.created_via,
-                        Version = x.version,
-                        Status = x.status,
-                        Currency = x.currency,
-                        DateCreated = x.date_created,
-                        DateCreatedGmt = x.date_created_gmt,
-                        DateModified = x.date_modified,
-                        DateModifiedGmt = x.date_modified_gmt,
-                        DiscountTotal = x.discount_total,
-                        DiscountTax = x.discount_tax,
-                        ShippingTotal = x.shipping_total,
-                        ShippingTax = x.shipping_tax,
-                        CartTax = x.cart_tax,
-                        Total = x.total,
-                        TotalTax = x.total_tax,
-                        PricesIncludeTax = x.prices_include_tax,
-                        CustomerId = x.customer_id,
-                        CustomerIpAddress = x.customer_ip_address,
-                        CustomerUserAgent = x.customer_user_agent,
-                        CustomerNote = x.customer_note,
-                        Billing = new WoocommerceBilling
-                        {
-                            FirstName = x.billing.first_name,
-                            LastName = x.billing.last_name,
-                            Company = x.billing.company,
-                            Address1 = x.billing.address_1,
-                            Address2 = x.billing.address_2,
-                            City = x.billing.city,
-                            State = x.billing.state,
-                            Postcode = x.billing.postcode,
-                            Country = x.billing.country,
-                            Email = x.billing.email,
-                            Phone = x.billing.phone
-                        },
-                        Shipping = new WoocommerceShipping
-                        {
-                            FirstName = x.shipping.first_name,
-                            LastName = x.shipping.last_name,
-                            Company = x.shipping.company,
-                            Address1 = x.shipping.address_1,
-                            Address2 = x.shipping.address_2,
-                            City = x.shipping.city,
-                            State = x.shipping.state,
-                            Postcode = x.shipping.postcode,
-                            Country = x.shipping.country
-                        },
-                        PaymentMethod = x.payment_method,
-                        PaymentMethodTitle = x.payment_method_title,
-                        TransactionId = x.transaction_id,
-                        DatePaid = x.date_paid,
-                        DatePaidGmt = x.date_paid_gmt,
-                        DateCompleted = x.date_completed,
-                        DateCompletedGmt = x.date_completed_gmt,
-                        CartHash = x.cart_hash
-                    })
-                    .ToList();
+                List<WoocommerceOrder> orders = await OrderRequest.FindOrderAsync(txt_order.Text);
                 int index = 0;
                 foreach (WoocommerceOrder order in orders)
                 {
@@ -224,9 +142,9 @@ namespace GuatexWoocommerce
                     index++;
                 }
             }
-            catch
+            catch (ConfigurationErrorsException ex)
             {
-                Console.WriteLine("Error");
+                _ = MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -234,6 +152,11 @@ namespace GuatexWoocommerce
             }
         }
 
+        /// <summary>
+        /// Coloca el form en el estado indicado y muestra el mensaje de carga
+        /// </summary>
+        /// <param name="loading">Indica si debe colocarse el form en estado de carga</param>
+        /// <param name="loadingText">Texto a mostrar de estado</param>
         private void SetLoading(bool loading, string loadingText = "")
         {
             if (loading)
@@ -251,6 +174,9 @@ namespace GuatexWoocommerce
             }
         }
 
+        /// <summary>
+        /// Ejecuta la consulta en la página
+        /// </summary>
         private async Task ExecuteRunner()
         {
             SetLoading(true, "Consultando información en la página...");
@@ -268,44 +194,12 @@ namespace GuatexWoocommerce
             SetLoading(false);
         }
 
-        private static (string endpoint, string key, string secret) GetWoocommerceSettings()
-        {
-            Properties.Settings settings = Properties.Settings.Default;
-            string endpoint = settings["WoocommerceEndpoint"].ToString();
-            string key = settings["WoocomerceConsumerKey"].ToString();
-            string secret = settings["WoocommerceSecretKey"].ToString();
-
-            return (endpoint, key, secret);
-        }
-
-        public static (string host, string user, string password, string database) GetMysqlSettings()
-        {
-            Properties.Settings settings = Properties.Settings.Default;
-            string host = settings["MysqlHost"].ToString();
-            string user = settings["MysqlUser"].ToString();
-            string password = settings["MysqlPassword"].ToString();
-            string database = settings["MysqlDatabase"].ToString();
-
-            return (host, user, password, database);
-        }
-
-        public static (string urlMunicipios,
-            string municipiosUsername,
-            string municipiosPassword,
-            string codigoCobro) GetGuatexMunicipiosSettings()
-        {
-            Properties.Settings settings = Properties.Settings.Default;
-            string urlMunicipios = settings["UrlMunicipios"].ToString();
-            string municipiosUsername = settings["UsuarioMunicipios"].ToString();
-            string municipiosPassword = settings["PasswordMunicipios"].ToString();
-            string codigoCobro = settings["CodigoCobroMunicipios"].ToString();
-
-            return (urlMunicipios, municipiosUsername, municipiosPassword, codigoCobro);
-        }
-
         private void btnGenerarEnvio_Click(object sender, EventArgs e)
         {
-            _ = MessageBox.Show($"{dgv_orders.SelectedRows[0].Cells[0].Value}, {dgv_orders.SelectedRows[0].Cells[1].Value}, , {dgv_orders.SelectedRows[0].Cells[2].Value}");
+            decimal d = decimal.Parse(dgv_orders.SelectedRows[0].Cells[0].Value.ToString());
+            ulong u = (ulong)d;
+            GenerateGuatexService generateGuatexService = new(u);
+            _ = generateGuatexService.ShowDialog();
         }
 
         private async void txt_order_KeyUp(object sender, KeyEventArgs e)
@@ -317,9 +211,9 @@ namespace GuatexWoocommerce
             btn_search.Enabled = txt_order.Text.Length > 2;
         }
 
-        private async void txt_order_Leave(object sender, EventArgs e)
+        private void txt_order_Leave(object sender, EventArgs e)
         {
-            await ExecuteRunner();
+
         }
 
         private async void btn_search_Click(object sender, EventArgs e)
@@ -329,7 +223,10 @@ namespace GuatexWoocommerce
 
         private void dgv_orders_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            _ = MessageBox.Show($"{dgv_orders.SelectedRows[0].Cells[0].Value}, {dgv_orders.SelectedRows[0].Cells[1].Value}, , {dgv_orders.SelectedRows[0].Cells[2].Value}");
+            decimal d = decimal.Parse(dgv_orders.SelectedRows[0].Cells[0].Value.ToString());
+            ulong u = (ulong)d;
+            GenerateGuatexService generateGuatexService = new(u);
+            _ = generateGuatexService.ShowDialog();
         }
 
         private void dgv_orders_CellClick(object sender, DataGridViewCellEventArgs e)

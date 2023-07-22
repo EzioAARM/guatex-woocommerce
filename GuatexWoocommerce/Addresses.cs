@@ -358,5 +358,57 @@ namespace GuatexWoocommerce
         {
             ClearInputs();
         }
+
+        private void tsmiEdit_Click(object sender, EventArgs e)
+        {
+            // Cargar data para editarla
+            DataGridViewRow row = dgv_addresses.SelectedRows[0];
+            txtId.Text = row.Cells[0].Value.ToString();
+            lblId.Visible = true;
+            txtId.Visible = true;
+            txtAddressName.Text = row.Cells[1].Value.ToString();
+            txtAddressPhone.Text = row.Cells[2].Value.ToString();
+            txtAddressFullAddress.Text = row.Cells[3].Value.ToString();
+            cmbAddressDepartamento.SelectedItem = row.Cells[4].Value.ToString();
+            cmbAddressMunicipio.SelectedItem = row.Cells[5].Value.ToString();
+            btnCrearActualizar.Text = "Actualizar";
+        }
+
+        private void tsmiDelete_Click(object sender, EventArgs e)
+        {
+            DialogResult confirmResult = MessageBox.Show("¿Está seguro que desea eliminar la dirección?", "Confirmar acción", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            if (confirmResult == DialogResult.OK)
+            {
+                // Eliminar data
+                SetLoading(true, "Eliminando dirección");
+                DataGridViewRow row = dgv_addresses.SelectedRows[0];
+                int id = int.Parse(row.Cells[0].Value.ToString());
+                Address address = Program._context.Addresses.SingleOrDefault(x => x.Id == id);
+                if (address != null)
+                {
+                    _ = Program._context.Addresses.Remove(address);
+                    _ = Program._context.SaveChanges();
+                }
+                Address[] addressList = Program._context.Addresses.ToArray();
+                LoadAddresses(addressList);
+                SetLoading(false);
+            }
+        }
+
+        private void tsmiSetAsDefault_Click(object sender, EventArgs e)
+        {
+            DialogResult confirmResult = MessageBox.Show(
+                "¿Está seguro que desea establecer la dirección como predeterminada? \n\nSi está de acuerdo todos los pedidos se enviarán por defecto de esta dirección, aunque siempre podrá modificar la dirección en la generación del pedido", "Confirmar acción", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            if (confirmResult == DialogResult.OK)
+            {
+                // Establecer como predeterminada
+                SetLoading(true, "Estableciendo dirección como predeterminada");
+                DataGridViewRow row = dgv_addresses.SelectedRows[0];
+                int id = int.Parse(row.Cells[0].Value.ToString());
+                Properties.Settings.Default["DefaultAddressId"] = id;
+                Properties.Settings.Default.Save();
+                SetLoading(false);
+            }
+        }
     }
 }

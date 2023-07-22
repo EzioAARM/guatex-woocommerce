@@ -31,6 +31,11 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Addresses));
             dgv_addresses = new DataGridView();
+            cmsSelectedCellMenu = new ContextMenuStrip(components);
+            tsmiEdit = new ToolStripMenuItem();
+            tsmiSetAsDefault = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
+            tsmiDelete = new ToolStripMenuItem();
             label1 = new Label();
             txtAddressName = new TextBox();
             txtAddressPhone = new TextBox();
@@ -70,16 +75,12 @@
             lblId = new Label();
             txtId = new TextBox();
             btnClearAndAdd = new Button();
-            cmsSelectedCellMenu = new ContextMenuStrip(components);
-            tsmiSetAsDefault = new ToolStripMenuItem();
-            tsmiEdit = new ToolStripMenuItem();
-            tsmiDelete = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)dgv_addresses).BeginInit();
+            cmsSelectedCellMenu.SuspendLayout();
             menuStrip1.SuspendLayout();
             gbInformacionDestino.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pbViewRecogeOficina).BeginInit();
             statusStrip1.SuspendLayout();
-            cmsSelectedCellMenu.SuspendLayout();
             SuspendLayout();
             // 
             // dgv_addresses
@@ -100,6 +101,38 @@
             dgv_addresses.Size = new Size(740, 253);
             dgv_addresses.TabIndex = 0;
             dgv_addresses.CellDoubleClick += dgv_addresses_CellDoubleClick;
+            // 
+            // cmsSelectedCellMenu
+            // 
+            cmsSelectedCellMenu.Items.AddRange(new ToolStripItem[] { tsmiEdit, tsmiSetAsDefault, toolStripSeparator2, tsmiDelete });
+            cmsSelectedCellMenu.Name = "cmsSelectedCellMenu";
+            cmsSelectedCellMenu.Size = new Size(189, 76);
+            // 
+            // tsmiEdit
+            // 
+            tsmiEdit.Name = "tsmiEdit";
+            tsmiEdit.Size = new Size(188, 22);
+            tsmiEdit.Text = "Editar";
+            tsmiEdit.Click += tsmiEdit_Click;
+            // 
+            // tsmiSetAsDefault
+            // 
+            tsmiSetAsDefault.Name = "tsmiSetAsDefault";
+            tsmiSetAsDefault.Size = new Size(188, 22);
+            tsmiSetAsDefault.Text = "Dirección por defecto";
+            tsmiSetAsDefault.Click += tsmiSetAsDefault_Click;
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(185, 6);
+            // 
+            // tsmiDelete
+            // 
+            tsmiDelete.Name = "tsmiDelete";
+            tsmiDelete.Size = new Size(188, 22);
+            tsmiDelete.Text = "Eliminar";
+            tsmiDelete.Click += tsmiDelete_Click;
             // 
             // label1
             // 
@@ -480,30 +513,6 @@
             btnClearAndAdd.UseVisualStyleBackColor = true;
             btnClearAndAdd.Click += btnClearAndAdd_Click;
             // 
-            // cmsSelectedCellMenu
-            // 
-            cmsSelectedCellMenu.Items.AddRange(new ToolStripItem[] { tsmiEdit, tsmiSetAsDefault, tsmiDelete });
-            cmsSelectedCellMenu.Name = "cmsSelectedCellMenu";
-            cmsSelectedCellMenu.Size = new Size(189, 92);
-            // 
-            // tsmiSetAsDefault
-            // 
-            tsmiSetAsDefault.Name = "tsmiSetAsDefault";
-            tsmiSetAsDefault.Size = new Size(188, 22);
-            tsmiSetAsDefault.Text = "Dirección por defecto";
-            // 
-            // tsmiEdit
-            // 
-            tsmiEdit.Name = "tsmiEdit";
-            tsmiEdit.Size = new Size(188, 22);
-            tsmiEdit.Text = "Editar";
-            // 
-            // tsmiDelete
-            // 
-            tsmiDelete.Name = "tsmiDelete";
-            tsmiDelete.Size = new Size(188, 22);
-            tsmiDelete.Text = "Eliminar";
-            // 
             // Addresses
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -537,6 +546,7 @@
             Load += Addresses_Load;
             Shown += Addresses_Shown;
             ((System.ComponentModel.ISupportInitialize)dgv_addresses).EndInit();
+            cmsSelectedCellMenu.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             gbInformacionDestino.ResumeLayout(false);
@@ -544,7 +554,6 @@
             ((System.ComponentModel.ISupportInitialize)pbViewRecogeOficina).EndInit();
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
-            cmsSelectedCellMenu.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -595,5 +604,6 @@
         private ToolStripMenuItem tsmiEdit;
         private ToolStripMenuItem tsmiSetAsDefault;
         private ToolStripMenuItem tsmiDelete;
+        private ToolStripSeparator toolStripSeparator2;
     }
 }

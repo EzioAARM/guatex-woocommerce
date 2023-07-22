@@ -154,5 +154,17 @@ namespace GuatexWoocommerce.Properties {
                 this["UrlMunicipios"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DefaultAddressId {
+            get {
+                return ((string)(this["DefaultAddressId"]));
+            }
+            set {
+                this["DefaultAddressId"] = value;
+            }
+        }
     }
 }
