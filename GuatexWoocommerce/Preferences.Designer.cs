@@ -57,10 +57,26 @@
             txtUrlMunicipios = new TextBox();
             label11 = new Label();
             statusStrip1 = new StatusStrip();
-            panel2 = new Panel();
+            menuStrip1 = new MenuStrip();
+            archivoToolStripMenuItem = new ToolStripMenuItem();
+            btnImportarMenu = new ToolStripMenuItem();
+            btnExportarMenu = new ToolStripMenuItem();
+            toolStripSeparator1 = new ToolStripSeparator();
+            btnSalirMenu = new ToolStripMenuItem();
+            txtUrlTomarServicio = new TextBox();
+            label12 = new Label();
+            groupBox1 = new GroupBox();
+            txtCodigoCobroServicio = new TextBox();
+            label13 = new Label();
+            txtPasswordServicio = new TextBox();
+            label14 = new Label();
+            txtUsernameServicio = new TextBox();
+            label15 = new Label();
             woocommerceSettings.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
+            menuStrip1.SuspendLayout();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // woocommerceSettings
@@ -71,7 +87,7 @@
             woocommerceSettings.Controls.Add(label2);
             woocommerceSettings.Controls.Add(txt_endpoint);
             woocommerceSettings.Controls.Add(label1);
-            woocommerceSettings.Location = new Point(12, 12);
+            woocommerceSettings.Location = new Point(12, 37);
             woocommerceSettings.Name = "woocommerceSettings";
             woocommerceSettings.Size = new Size(668, 223);
             woocommerceSettings.TabIndex = 0;
@@ -128,7 +144,7 @@
             // 
             // btn_save
             // 
-            btn_save.Location = new Point(605, 1021);
+            btn_save.Location = new Point(605, 1174);
             btn_save.Name = "btn_save";
             btn_save.Size = new Size(75, 23);
             btn_save.TabIndex = 2;
@@ -138,7 +154,7 @@
             // 
             // btn_cancel
             // 
-            btn_cancel.Location = new Point(12, 1021);
+            btn_cancel.Location = new Point(12, 1174);
             btn_cancel.Name = "btn_cancel";
             btn_cancel.Size = new Size(75, 23);
             btn_cancel.TabIndex = 3;
@@ -155,7 +171,7 @@
             groupBox2.Controls.Add(label5);
             groupBox2.Controls.Add(txt_dbHost);
             groupBox2.Controls.Add(label6);
-            groupBox2.Location = new Point(12, 254);
+            groupBox2.Location = new Point(12, 266);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(668, 295);
             groupBox2.TabIndex = 6;
@@ -237,9 +253,9 @@
             groupBox3.Controls.Add(label10);
             groupBox3.Controls.Add(txtUrlMunicipios);
             groupBox3.Controls.Add(label11);
-            groupBox3.Location = new Point(12, 555);
+            groupBox3.Location = new Point(12, 567);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(668, 460);
+            groupBox3.Size = new Size(668, 285);
             groupBox3.TabIndex = 7;
             groupBox3.TabStop = false;
             groupBox3.Text = "Servicio de Guatex";
@@ -311,19 +327,136 @@
             // 
             // statusStrip1
             // 
-            statusStrip1.Location = new Point(0, 1081);
+            statusStrip1.Location = new Point(0, 1197);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(704, 22);
+            statusStrip1.Size = new Size(687, 22);
             statusStrip1.SizingGrip = false;
             statusStrip1.TabIndex = 8;
             statusStrip1.Text = "statusStrip1";
             // 
-            // panel2
+            // menuStrip1
             // 
-            panel2.Location = new Point(12, 1050);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(668, 10);
-            panel2.TabIndex = 9;
+            menuStrip1.Items.AddRange(new ToolStripItem[] { archivoToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(687, 24);
+            menuStrip1.TabIndex = 10;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // archivoToolStripMenuItem
+            // 
+            archivoToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { btnImportarMenu, btnExportarMenu, toolStripSeparator1, btnSalirMenu });
+            archivoToolStripMenuItem.Name = "archivoToolStripMenuItem";
+            archivoToolStripMenuItem.Size = new Size(60, 20);
+            archivoToolStripMenuItem.Text = "Archivo";
+            // 
+            // btnImportarMenu
+            // 
+            btnImportarMenu.Name = "btnImportarMenu";
+            btnImportarMenu.Size = new Size(120, 22);
+            btnImportarMenu.Text = "Importar";
+            btnImportarMenu.Click += btnImportarMenu_Click;
+            // 
+            // btnExportarMenu
+            // 
+            btnExportarMenu.Name = "btnExportarMenu";
+            btnExportarMenu.Size = new Size(120, 22);
+            btnExportarMenu.Text = "Exportar";
+            btnExportarMenu.Click += btnExportarMenu_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(117, 6);
+            // 
+            // btnSalirMenu
+            // 
+            btnSalirMenu.Name = "btnSalirMenu";
+            btnSalirMenu.Size = new Size(120, 22);
+            btnSalirMenu.Text = "Salir";
+            btnSalirMenu.Click += btnSalirMenu_Click;
+            // 
+            // txtUrlTomarServicio
+            // 
+            txtUrlTomarServicio.Location = new Point(29, 54);
+            txtUrlTomarServicio.Name = "txtUrlTomarServicio";
+            txtUrlTomarServicio.Size = new Size(611, 23);
+            txtUrlTomarServicio.TabIndex = 19;
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new Point(29, 36);
+            label12.Name = "label12";
+            label12.Size = new Size(144, 15);
+            label12.TabIndex = 18;
+            label12.Text = "URL para toma de servicio";
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(txtCodigoCobroServicio);
+            groupBox1.Controls.Add(label13);
+            groupBox1.Controls.Add(txtPasswordServicio);
+            groupBox1.Controls.Add(label14);
+            groupBox1.Controls.Add(txtUsernameServicio);
+            groupBox1.Controls.Add(label15);
+            groupBox1.Controls.Add(label12);
+            groupBox1.Controls.Add(txtUrlTomarServicio);
+            groupBox1.Location = new Point(12, 858);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(668, 299);
+            groupBox1.TabIndex = 16;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Servicio de Guatex";
+            // 
+            // txtCodigoCobroServicio
+            // 
+            txtCodigoCobroServicio.Location = new Point(29, 245);
+            txtCodigoCobroServicio.Name = "txtCodigoCobroServicio";
+            txtCodigoCobroServicio.Size = new Size(611, 23);
+            txtCodigoCobroServicio.TabIndex = 25;
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new Point(29, 227);
+            label13.Name = "label13";
+            label13.Size = new Size(96, 15);
+            label13.TabIndex = 24;
+            label13.Text = "Código de cobro";
+            // 
+            // txtPasswordServicio
+            // 
+            txtPasswordServicio.Location = new Point(29, 181);
+            txtPasswordServicio.Name = "txtPasswordServicio";
+            txtPasswordServicio.PasswordChar = '*';
+            txtPasswordServicio.Size = new Size(611, 23);
+            txtPasswordServicio.TabIndex = 23;
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new Point(29, 163);
+            label14.Name = "label14";
+            label14.Size = new Size(67, 15);
+            label14.TabIndex = 22;
+            label14.Text = "Contraseña";
+            // 
+            // txtUsernameServicio
+            // 
+            txtUsernameServicio.Location = new Point(29, 117);
+            txtUsernameServicio.Name = "txtUsernameServicio";
+            txtUsernameServicio.Size = new Size(611, 23);
+            txtUsernameServicio.TabIndex = 21;
+            // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Location = new Point(29, 99);
+            label15.Name = "label15";
+            label15.Size = new Size(109, 15);
+            label15.TabIndex = 20;
+            label15.Text = "Nombre de usuario";
             // 
             // Preferences
             // 
@@ -331,9 +464,10 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
             AutoScrollMinSize = new Size(0, 500);
-            ClientSize = new Size(704, 1103);
-            Controls.Add(panel2);
+            ClientSize = new Size(704, 573);
+            Controls.Add(groupBox1);
             Controls.Add(statusStrip1);
+            Controls.Add(menuStrip1);
             Controls.Add(groupBox3);
             Controls.Add(groupBox2);
             Controls.Add(btn_cancel);
@@ -341,6 +475,7 @@
             Controls.Add(woocommerceSettings);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MainMenuStrip = menuStrip1;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "Preferences";
@@ -353,6 +488,10 @@
             groupBox2.PerformLayout();
             groupBox3.ResumeLayout(false);
             groupBox3.PerformLayout();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -389,6 +528,19 @@
         private Label label10;
         private TextBox txtUrlMunicipios;
         private Label label11;
-        private Panel panel2;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem archivoToolStripMenuItem;
+        private ToolStripMenuItem btnImportarMenu;
+        private ToolStripMenuItem btnExportarMenu;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem btnSalirMenu;
+        private TextBox txtUrlTomarServicio;
+        private Label label12;
+        private TextBox txtCodigoCobroServicio;
+        private Label label13;
+        private TextBox txtPasswordServicio;
+        private Label label14;
+        private TextBox txtUsernameServicio;
+        private Label label15;
     }
 }

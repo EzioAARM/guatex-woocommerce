@@ -69,13 +69,17 @@
             txtClientFirstName = new TextBox();
             label11 = new Label();
             txtClientId = new TextBox();
-            label16 = new Label();
+            lblDireccion = new Label();
             txtDireccion = new TextBox();
             label17 = new Label();
             label18 = new Label();
             cmbDepartamento = new ComboBox();
             cmbMunicipio = new ComboBox();
             btnCrearActualizar = new Button();
+            cb_recogerOficina = new CheckBox();
+            label16 = new Label();
+            cmbSendFrom = new ComboBox();
+            label19 = new Label();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             groupBox1.SuspendLayout();
@@ -530,23 +534,22 @@
             txtClientId.Size = new Size(392, 22);
             txtClientId.TabIndex = 19;
             // 
-            // label16
+            // lblDireccion
             // 
-            label16.AutoSize = true;
-            label16.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label16.Location = new Point(702, 554);
-            label16.Name = "label16";
-            label16.Size = new Size(93, 25);
-            label16.TabIndex = 36;
-            label16.Text = "Dirección";
+            lblDireccion.AutoSize = true;
+            lblDireccion.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            lblDireccion.Location = new Point(702, 640);
+            lblDireccion.Name = "lblDireccion";
+            lblDireccion.Size = new Size(93, 25);
+            lblDireccion.TabIndex = 36;
+            lblDireccion.Text = "Dirección";
             // 
             // txtDireccion
             // 
             txtDireccion.BackColor = SystemColors.ControlLightLight;
             txtDireccion.BorderStyle = BorderStyle.None;
-            txtDireccion.Enabled = false;
             txtDireccion.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtDireccion.Location = new Point(801, 557);
+            txtDireccion.Location = new Point(801, 643);
             txtDireccion.Name = "txtDireccion";
             txtDireccion.Size = new Size(351, 22);
             txtDireccion.TabIndex = 37;
@@ -555,7 +558,7 @@
             // 
             label17.AutoSize = true;
             label17.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label17.Location = new Point(697, 513);
+            label17.Location = new Point(697, 599);
             label17.Name = "label17";
             label17.Size = new Size(98, 25);
             label17.TabIndex = 34;
@@ -565,7 +568,7 @@
             // 
             label18.AutoSize = true;
             label18.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label18.Location = new Point(657, 472);
+            label18.Location = new Point(657, 558);
             label18.Name = "label18";
             label18.Size = new Size(138, 25);
             label18.TabIndex = 32;
@@ -577,10 +580,11 @@
             cmbDepartamento.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             cmbDepartamento.FormattingEnabled = true;
             cmbDepartamento.ImeMode = ImeMode.Off;
-            cmbDepartamento.Location = new Point(801, 472);
+            cmbDepartamento.Location = new Point(801, 558);
             cmbDepartamento.Name = "cmbDepartamento";
             cmbDepartamento.Size = new Size(351, 29);
             cmbDepartamento.TabIndex = 38;
+            cmbDepartamento.SelectedIndexChanged += cmbDepartamento_SelectedIndexChanged;
             // 
             // cmbMunicipio
             // 
@@ -588,7 +592,7 @@
             cmbMunicipio.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             cmbMunicipio.FormattingEnabled = true;
             cmbMunicipio.ImeMode = ImeMode.Off;
-            cmbMunicipio.Location = new Point(801, 513);
+            cmbMunicipio.Location = new Point(801, 599);
             cmbMunicipio.Name = "cmbMunicipio";
             cmbMunicipio.Size = new Size(351, 29);
             cmbMunicipio.TabIndex = 39;
@@ -602,6 +606,50 @@
             btnCrearActualizar.TabIndex = 40;
             btnCrearActualizar.Text = "Generar Guía";
             btnCrearActualizar.UseVisualStyleBackColor = true;
+            btnCrearActualizar.Click += btnCrearActualizar_Click;
+            // 
+            // cb_recogerOficina
+            // 
+            cb_recogerOficina.AutoSize = true;
+            cb_recogerOficina.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            cb_recogerOficina.Location = new Point(801, 495);
+            cb_recogerOficina.Name = "cb_recogerOficina";
+            cb_recogerOficina.Size = new Size(205, 29);
+            cb_recogerOficina.TabIndex = 41;
+            cb_recogerOficina.Text = "¿Recoger en oficina?";
+            cb_recogerOficina.UseVisualStyleBackColor = true;
+            cb_recogerOficina.CheckedChanged += cb_recogerOficina_CheckedChanged;
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label16.Location = new Point(661, 460);
+            label16.Name = "label16";
+            label16.Size = new Size(135, 25);
+            label16.TabIndex = 42;
+            label16.Text = "Enviar desde...";
+            // 
+            // cmbSendFrom
+            // 
+            cmbSendFrom.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbSendFrom.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            cmbSendFrom.FormattingEnabled = true;
+            cmbSendFrom.ImeMode = ImeMode.Off;
+            cmbSendFrom.Location = new Point(801, 460);
+            cmbSendFrom.Name = "cmbSendFrom";
+            cmbSendFrom.Size = new Size(351, 29);
+            cmbSendFrom.TabIndex = 43;
+            // 
+            // label19
+            // 
+            label19.AutoSize = true;
+            label19.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
+            label19.Location = new Point(727, 529);
+            label19.Name = "label19";
+            label19.Size = new Size(61, 19);
+            label19.TabIndex = 44;
+            label19.Text = "Enviar a:";
             // 
             // GenerateGuatexService
             // 
@@ -609,10 +657,14 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
             ClientSize = new Size(1199, 745);
+            Controls.Add(label19);
+            Controls.Add(cmbSendFrom);
+            Controls.Add(label16);
+            Controls.Add(cb_recogerOficina);
             Controls.Add(btnCrearActualizar);
             Controls.Add(cmbMunicipio);
             Controls.Add(cmbDepartamento);
-            Controls.Add(label16);
+            Controls.Add(lblDireccion);
             Controls.Add(txtDireccion);
             Controls.Add(label17);
             Controls.Add(label18);
@@ -682,12 +734,16 @@
         private RichTextBox txtOrderNote;
         private Label label15;
         private DataGridView dgvOrderItems;
-        private Label label16;
+        private Label lblDireccion;
         private TextBox txtDireccion;
         private Label label17;
         private Label label18;
         private ComboBox cmbDepartamento;
         private ComboBox cmbMunicipio;
         private Button btnCrearActualizar;
+        private CheckBox cb_recogerOficina;
+        private Label label16;
+        private ComboBox cmbSendFrom;
+        private Label label19;
     }
 }

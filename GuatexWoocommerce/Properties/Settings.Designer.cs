@@ -166,5 +166,53 @@ namespace GuatexWoocommerce.Properties {
                 this["DefaultAddressId"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string UrlTomaServicio {
+            get {
+                return ((string)(this["UrlTomaServicio"]));
+            }
+            set {
+                this["UrlTomaServicio"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string UsuarioTomaServicio {
+            get {
+                return ((string)(this["UsuarioTomaServicio"]));
+            }
+            set {
+                this["UsuarioTomaServicio"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PasswordTomaServicio {
+            get {
+                return ((string)(this["PasswordTomaServicio"]));
+            }
+            set {
+                this["PasswordTomaServicio"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CodigoCobroTomaServicio {
+            get {
+                return ((string)(this["CodigoCobroTomaServicio"]));
+            }
+            set {
+                this["CodigoCobroTomaServicio"] = value;
+            }
+        }
     }
 }

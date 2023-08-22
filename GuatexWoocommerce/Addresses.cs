@@ -405,7 +405,7 @@ namespace GuatexWoocommerce
                 SetLoading(true, "Estableciendo dirección como predeterminada");
                 DataGridViewRow row = dgv_addresses.SelectedRows[0];
                 int id = int.Parse(row.Cells[0].Value.ToString());
-                Properties.Settings.Default["DefaultAddressId"] = id;
+                Properties.Settings.Default["DefaultAddressId"] = id.ToString();
                 Properties.Settings.Default.Save();
                 SetLoading(false);
             }

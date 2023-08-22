@@ -34,10 +34,7 @@ namespace GuatexWoocommerce
             return (host, user, password, database);
         }
 
-        public static (string urlMunicipios,
-            string municipiosUsername,
-            string municipiosPassword,
-            string codigoCobro) GetGuatexMunicipiosSettings()
+        public static (string urlMunicipios, string municipiosUsername, string municipiosPassword, string codigoCobro) GetGuatexMunicipiosSettings()
         {
             Properties.Settings settings = Properties.Settings.Default;
             string urlMunicipios = settings["UrlMunicipios"].ToString();
@@ -46,6 +43,17 @@ namespace GuatexWoocommerce
             string codigoCobro = settings["CodigoCobroMunicipios"].ToString();
 
             return (urlMunicipios, municipiosUsername, municipiosPassword, codigoCobro);
+        }
+
+        public static (string urlServicio, string servicioUsername, string servicioPassword, string codigoCobro) GetGuatexTomaServiciosSettings()
+        {
+            Properties.Settings settings = Properties.Settings.Default;
+            string urlServicio = settings["UrlTomaServicio"].ToString();
+            string servicioUsername = settings["UsuarioTomaServicio"].ToString();
+            string servicioPassword = settings["PasswordTomaServicio"].ToString();
+            string codigoCobro = settings["CodigoCobroTomaServicio"].ToString();
+
+            return (urlServicio, servicioUsername, servicioPassword, codigoCobro);
         }
     }
 }

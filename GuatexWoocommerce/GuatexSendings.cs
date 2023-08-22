@@ -72,10 +72,12 @@ namespace GuatexWoocommerce
             (string endpoint, string key, string secret) = Program.GetWoocommerceSettings();
             (string host, string user, string password, string database) = Program.GetMysqlSettings();
             (string urlMunicipios, string municipiosUsername, string municipiosPassword, string codigoCobro) = Program.GetGuatexMunicipiosSettings();
+            (string urlServicio, string servicioUsername, string servicioPassword, string codigoCobroServicio) = Program.GetGuatexTomaServiciosSettings();
             if (string.IsNullOrEmpty(endpoint) || string.IsNullOrEmpty(key) || string.IsNullOrEmpty(secret) ||
                 string.IsNullOrEmpty(host) || string.IsNullOrEmpty(user) || string.IsNullOrEmpty(password) ||
                 string.IsNullOrEmpty(database) || string.IsNullOrEmpty(urlMunicipios) || string.IsNullOrEmpty(municipiosUsername) ||
-                string.IsNullOrEmpty(municipiosPassword) || string.IsNullOrEmpty(codigoCobro))
+                string.IsNullOrEmpty(municipiosPassword) || string.IsNullOrEmpty(codigoCobro) || string.IsNullOrEmpty(urlServicio) ||
+                string.IsNullOrEmpty(servicioUsername) || string.IsNullOrEmpty(servicioPassword) || string.IsNullOrEmpty(codigoCobroServicio))
             {
                 _ = MessageBox.Show("Se deben configurar las credenciales para el correcto funcionamiento de la aplicación", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Preferences settingsForm = new(displayIcon: true);
@@ -196,10 +198,12 @@ namespace GuatexWoocommerce
 
         private void btnGenerarEnvio_Click(object sender, EventArgs e)
         {
+            Enabled = false;
             decimal d = decimal.Parse(dgv_orders.SelectedRows[0].Cells[0].Value.ToString());
             ulong u = (ulong)d;
             GenerateGuatexService generateGuatexService = new(u);
             _ = generateGuatexService.ShowDialog();
+            Enabled = true;
         }
 
         private async void txt_order_KeyUp(object sender, KeyEventArgs e)
@@ -223,10 +227,12 @@ namespace GuatexWoocommerce
 
         private void dgv_orders_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            Enabled = false;
             decimal d = decimal.Parse(dgv_orders.SelectedRows[0].Cells[0].Value.ToString());
             ulong u = (ulong)d;
             GenerateGuatexService generateGuatexService = new(u);
             _ = generateGuatexService.ShowDialog();
+            Enabled = true;
         }
 
         private void dgv_orders_CellClick(object sender, DataGridViewCellEventArgs e)
