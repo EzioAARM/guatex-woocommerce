@@ -1,7 +1,8 @@
 ﻿using GuatexWoocommerce.Models;
+using Newtonsoft.Json;
 using System.Configuration;
-using WooCommerceNET;
-using WooCommerceNET.WooCommerce.v3;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace GuatexWoocommerce.WoocommerceApi
 {
@@ -21,27 +22,25 @@ namespace GuatexWoocommerce.WoocommerceApi
                 throw new ConfigurationErrorsException("Debe configurar las credenciales de Woocommerce");
             }
 
-            RestAPI rest = new($"{endpoint}/wp-json/wc/v3/", key, secret);
-            WCObject wc = new(rest);
-            List<Product> product = await wc.Product.GetAll(new Dictionary<string, string>()
+            // Create http client
+            HttpClient client = new();
+
+            // Create request
+            HttpRequestMessage request = new(HttpMethod.Get, $"{endpoint}/wp-json/wc/v3/products?sku={sku}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($"{key}:{secret}")));
+
+            // Send request
+            HttpResponseMessage response = client.Send(request);
+            string content = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
             {
-                { "sku", sku }
-            });
-            if (product.Count == 0)
+                var result = JsonConvert.DeserializeObject<List<WoocommerceProduct>>(content);
+                return result.FirstOrDefault();
+            }
+            else
             {
                 return null;
             }
-            WoocommerceProduct finalProduct = new()
-            {
-                Id = product.First().id,
-                Name = product.First().name,
-                Slug = product.First().slug,
-                Permalink = product.First().permalink,
-                Sku = product.First().sku,
-                Price = product.First().price,
-                Weight = product.First().weight
-            };
-            return finalProduct;
         }
     }
 }

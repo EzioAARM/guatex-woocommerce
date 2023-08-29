@@ -35,6 +35,8 @@ namespace GuatexWoocommerce
             txtUsernameServicio.Text = Properties.Settings.Default["UsuarioTomaServicio"].ToString();
             txtPasswordServicio.Text = Properties.Settings.Default["PasswordTomaServicio"].ToString();
             txtCodigoCobroServicio.Text = Properties.Settings.Default["CodigoCobroTomaServicio"].ToString();
+
+            txtNombreRemitente.Text = Properties.Settings.Default["NombreRemitente"].ToString();
         }
 
         private void btn_save_Click(object sender, EventArgs e)
@@ -63,6 +65,8 @@ namespace GuatexWoocommerce
             Properties.Settings.Default["UsuarioTomaServicio"] = txtUsernameServicio.Text;
             Properties.Settings.Default["PasswordTomaServicio"] = txtPasswordServicio.Text;
             Properties.Settings.Default["CodigoCobroTomaServicio"] = txtCodigoCobroServicio.Text;
+
+            Properties.Settings.Default["NombreRemitente"] = txtNombreRemitente.Text;
 
             Properties.Settings.Default.Save();
 
@@ -116,10 +120,11 @@ namespace GuatexWoocommerce
                     txtPasswordMunicipios.Text = data.FirstOrDefault(x => x.Key.Equals("PasswordMunicipios"))?.Value;
                     txtCodigoCobroMunicipios.Text = data.FirstOrDefault(x => x.Key.Equals("CodigoCobroMunicipios"))?.Value;
 
-                    txtUrlTomarServicio.Text = data.FirstOrDefault(x => x.Key.Equals("UrlTomaServicio"))?.Value; ;
-                    txtUsernameServicio.Text = data.FirstOrDefault(x => x.Key.Equals("UsuarioTomaServicio"))?.Value; ;
-                    txtPasswordServicio.Text = data.FirstOrDefault(x => x.Key.Equals("PasswordTomaServicio"))?.Value; ;
-                    txtCodigoCobroServicio.Text = data.FirstOrDefault(x => x.Key.Equals("CodigoCobroTomaServicio"))?.Value; ;
+                    txtUrlTomarServicio.Text = data.FirstOrDefault(x => x.Key.Equals("UrlTomaServicio"))?.Value;
+                    txtUsernameServicio.Text = data.FirstOrDefault(x => x.Key.Equals("UsuarioTomaServicio"))?.Value;
+                    txtPasswordServicio.Text = data.FirstOrDefault(x => x.Key.Equals("PasswordTomaServicio"))?.Value;
+                    txtCodigoCobroServicio.Text = data.FirstOrDefault(x => x.Key.Equals("CodigoCobroTomaServicio"))?.Value;
+                    txtNombreRemitente.Text = data.FirstOrDefault(x => x.Key.Equals("NombreRemitente"))?.Value;
 
                     _ = MessageBox.Show("Cambios importados con éxito, antes de salir debe guardar las configuraciones importadas", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }

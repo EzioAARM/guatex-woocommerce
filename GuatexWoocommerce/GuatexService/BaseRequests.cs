@@ -45,8 +45,9 @@ namespace GuatexWoocommerce.GuatexService
                     InnerXml = reader.ReadToEnd()
                 };
             }
-            catch (WebException)
+            catch (WebException ex)
             {
+                string test = ex.Message;
                 XmlDocument soapEnvelopeXml = new();
                 soapEnvelopeXml.LoadXml(xmlEnvelope);
                 return soapEnvelopeXml;

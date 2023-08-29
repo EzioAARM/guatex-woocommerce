@@ -125,7 +125,7 @@
             dgv_orders.ReadOnly = true;
             dgv_orders.RowTemplate.Height = 25;
             dgv_orders.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgv_orders.Size = new Size(1106, 205);
+            dgv_orders.Size = new Size(1106, 400);
             dgv_orders.TabIndex = 3;
             dgv_orders.CellClick += dgv_orders_CellClick;
             dgv_orders.CellDoubleClick += dgv_orders_CellDoubleClick;
@@ -167,7 +167,7 @@
             // statusStrip1
             // 
             statusStrip1.Items.AddRange(new ToolStripItem[] { lblStatus, pb_loader });
-            statusStrip1.Location = new Point(0, 367);
+            statusStrip1.Location = new Point(0, 527);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(1130, 22);
             statusStrip1.SizingGrip = false;
@@ -193,7 +193,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1130, 389);
+            ClientSize = new Size(1130, 549);
             Controls.Add(statusStrip1);
             Controls.Add(btn_search);
             Controls.Add(btnGenerarEnvio);

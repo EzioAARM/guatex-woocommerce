@@ -214,5 +214,17 @@ namespace GuatexWoocommerce.Properties {
                 this["CodigoCobroTomaServicio"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string NombreRemitente {
+            get {
+                return ((string)(this["NombreRemitente"]));
+            }
+            set {
+                this["NombreRemitente"] = value;
+            }
+        }
     }
 }

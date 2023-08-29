@@ -2,6 +2,7 @@
 using GuatexWoocommerce.GuatexService;
 using GuatexWoocommerce.Models;
 using GuatexWoocommerce.WoocommerceApi;
+using Microsoft.VisualBasic;
 using System.Reflection;
 
 namespace GuatexWoocommerce
@@ -63,14 +64,17 @@ namespace GuatexWoocommerce
                     };
                 })
                 .OrderBy(x => x.Position)
-                .Select(f => new DataGridViewTextBoxColumn
+                .Select(f =>
                 {
-                    Name = f.Name,
-                    HeaderText = f.Title,
-                    DataPropertyName = f.Name,
-                    DefaultCellStyle = dgvCellStyle,
-                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
-                    MinimumWidth = f.Width,
+                    return new DataGridViewTextBoxColumn
+                    {
+                        Name = f.Name,
+                        HeaderText = f.Title,
+                        DataPropertyName = f.Name,
+                        DefaultCellStyle = dgvCellStyle,
+                        AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                        MinimumWidth = f.Width,
+                    };
                 })
                 .ToArray();
             dgvOrderItems.Columns.AddRange(addressFields);
@@ -220,10 +224,35 @@ namespace GuatexWoocommerce
                                 WoocommerceProduct product = ProductRequest.GetProduct(x.Sku)
                                     .GetAwaiter()
                                     .GetResult();
+                                string peso = product.Weight;
+                                bool falla = true;
+                                if (string.IsNullOrEmpty(peso))
+                                {
+                                    int intentos = 0;
+                                    while (intentos <= 3)
+                                    {
+                                        peso = Interaction.InputBox($"Ingrese peso en libras del producto con el sku {x.Sku}. Intento {intentos + 1}/4", "El producto no tiene peso registrado");
+                                        try
+                                        {
+                                            Convert.ToDecimal(peso);
+                                            intentos = 4;
+                                            falla = false;
+                                        }
+                                        catch
+                                        {
+                                            MessageBox.Show("El peso ingresado no es válido, debe ser un numero", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        }
+                                        intentos++;
+                                    }
+                                }
+                                if (falla)
+                                {
+                                    throw new ArgumentException("El peso ingresado no es válido, generación de guía cancelada");
+                                }
                                 var detalle = new LineaDetalleGuia()
                                 {
                                     Cantidad = Convert.ToInt32(x.Quantity),
-                                    Peso = product.Weight.Value,
+                                    Peso = Convert.ToDecimal(peso),
                                     TipoEnvio = "2"
                                 };
                                 return detalle;
@@ -236,7 +265,7 @@ namespace GuatexWoocommerce
                         .ToList();
                     Servicio servicio = new();
                     var sendFromAddress = Program._context.Addresses.Single(x => x.Name.Equals(cmbSendFrom.Text));
-                    servicio.Solicitar(
+                    GuatexSolicitudServicio servicioSolicitado = servicio.Solicitar(
                         addressPhone: txtClientPhone.Text,
                         sendFromAddress: sendFromAddress.FullAddress,
                         idMunicipalityFrom: sendFromAddress.MunicipalityId,
@@ -249,10 +278,21 @@ namespace GuatexWoocommerce
                         description: txtOrderNote.Text,
                         pickInOffice: cb_recogerOficina.Checked,
                         products: detalleGuia);
+                    var result = OrderRequest.UpdateOrder(
+                            orderId: _order.Id.Value,
+                            status: "completed");
+                    string note = $@"Su número de guía Guatex es: {servicioSolicitado.Guias.First().Numero}, puede consultarla <a href='https://servicios.guatex.gt/Guatex/Tracking/'>aquí</a>.";
+                    OrderRequest.AddNoteToOrder(
+                            orderId: _order.Id.Value,
+                            note: note);
                 }
-                catch (Exception ex)
+                catch (ArgumentException ex)
                 {
-                    string test = ex.Message;
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Hubo un error inesperado");
                 }
                 finally
                 {

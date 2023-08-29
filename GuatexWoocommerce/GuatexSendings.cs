@@ -77,7 +77,8 @@ namespace GuatexWoocommerce
                 string.IsNullOrEmpty(host) || string.IsNullOrEmpty(user) || string.IsNullOrEmpty(password) ||
                 string.IsNullOrEmpty(database) || string.IsNullOrEmpty(urlMunicipios) || string.IsNullOrEmpty(municipiosUsername) ||
                 string.IsNullOrEmpty(municipiosPassword) || string.IsNullOrEmpty(codigoCobro) || string.IsNullOrEmpty(urlServicio) ||
-                string.IsNullOrEmpty(servicioUsername) || string.IsNullOrEmpty(servicioPassword) || string.IsNullOrEmpty(codigoCobroServicio))
+                string.IsNullOrEmpty(servicioUsername) || string.IsNullOrEmpty(servicioPassword) || string.IsNullOrEmpty(codigoCobroServicio) ||
+                string.IsNullOrEmpty(Properties.Settings.Default["NombreRemitente"].ToString()))
             {
                 _ = MessageBox.Show("Se deben configurar las credenciales para el correcto funcionamiento de la aplicación", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Preferences settingsForm = new(displayIcon: true);

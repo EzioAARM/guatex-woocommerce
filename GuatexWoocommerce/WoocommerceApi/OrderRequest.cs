@@ -1,5 +1,7 @@
 ﻿using GuatexWoocommerce.Models;
 using System.Configuration;
+using System.Net.Http.Headers;
+using System.Text;
 using WooCommerceNET;
 using WooCommerceNET.WooCommerce.v3;
 
@@ -189,6 +191,85 @@ namespace GuatexWoocommerce.WoocommerceApi
                 order.CartHash = requestedOrders.cart_hash;
             }
             return order;
+        }
+
+        /// <summary>
+        /// Actualiza el status de una orden de Woocommerce
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        /// <exception cref="ConfigurationErrorsException"></exception>
+        public static bool UpdateOrder(ulong orderId, string status)
+        {
+            (string endpoint, string key, string secret) = Program.GetWoocommerceSettings();
+            if (string.IsNullOrEmpty(endpoint) || string.IsNullOrEmpty(key) || string.IsNullOrEmpty(secret))
+            {
+                throw new ConfigurationErrorsException("Debe configurar las credenciales de Woocommerce");
+            }
+
+            // Create http client
+            HttpClient client = new();
+
+            // Create request
+            HttpRequestMessage request = new(HttpMethod.Get, $"{endpoint}/wp-json/wc/v3/orders/{orderId}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($"{key}:{secret}")));
+
+            // Body for update status
+            string body = $"{{\"status\": \"{status}\"}}";
+            request.Content = new StringContent(body, Encoding.UTF8, "application/json");
+            request.Method = HttpMethod.Put;
+
+            // Send request
+            HttpResponseMessage response = client.Send(request);
+            string text = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Actualiza la nota de un pedido de Woocommerce
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="note"></param>
+        /// <returns></returns>
+        /// <exception cref="ConfigurationErrorsException"></exception>
+        public static bool AddNoteToOrder(ulong orderId, string note)
+        {
+            (string endpoint, string key, string secret) = Program.GetWoocommerceSettings();
+            if (string.IsNullOrEmpty(endpoint) || string.IsNullOrEmpty(key) || string.IsNullOrEmpty(secret))
+            {
+                throw new ConfigurationErrorsException("Debe configurar las credenciales de Woocommerce");
+            }
+
+            // Create http client
+            HttpClient client = new();
+
+            // Create request
+            HttpRequestMessage request = new(HttpMethod.Get, $"{endpoint}/wp-json/wc/v3/orders/{orderId}/notes");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($"{key}:{secret}")));
+            request.Method = HttpMethod.Post;
+
+            // Body for update status
+            string body = $"{{\"note\": \"{note}\", \"customer_note\": true}}";
+            request.Content = new StringContent(body, Encoding.UTF8, "application/json");
+
+            // Send request
+            HttpResponseMessage response = client.Send(request);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

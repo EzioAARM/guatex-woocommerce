@@ -72,6 +72,8 @@
             label14 = new Label();
             txtUsernameServicio = new TextBox();
             label15 = new Label();
+            txtNombreRemitente = new TextBox();
+            label16 = new Label();
             woocommerceSettings.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -144,7 +146,7 @@
             // 
             // btn_save
             // 
-            btn_save.Location = new Point(605, 1174);
+            btn_save.Location = new Point(605, 1228);
             btn_save.Name = "btn_save";
             btn_save.Size = new Size(75, 23);
             btn_save.TabIndex = 2;
@@ -154,7 +156,7 @@
             // 
             // btn_cancel
             // 
-            btn_cancel.Location = new Point(12, 1174);
+            btn_cancel.Location = new Point(12, 1228);
             btn_cancel.Name = "btn_cancel";
             btn_cancel.Size = new Size(75, 23);
             btn_cancel.TabIndex = 3;
@@ -327,9 +329,9 @@
             // 
             // statusStrip1
             // 
-            statusStrip1.Location = new Point(0, 1197);
+            statusStrip1.Location = new Point(0, 1268);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(687, 22);
+            statusStrip1.Size = new Size(704, 22);
             statusStrip1.SizingGrip = false;
             statusStrip1.TabIndex = 8;
             statusStrip1.Text = "statusStrip1";
@@ -339,7 +341,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { archivoToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(687, 24);
+            menuStrip1.Size = new Size(704, 24);
             menuStrip1.TabIndex = 10;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -394,6 +396,8 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(txtNombreRemitente);
+            groupBox1.Controls.Add(label16);
             groupBox1.Controls.Add(txtCodigoCobroServicio);
             groupBox1.Controls.Add(label13);
             groupBox1.Controls.Add(txtPasswordServicio);
@@ -404,7 +408,7 @@
             groupBox1.Controls.Add(txtUrlTomarServicio);
             groupBox1.Location = new Point(12, 858);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(668, 299);
+            groupBox1.Size = new Size(668, 364);
             groupBox1.TabIndex = 16;
             groupBox1.TabStop = false;
             groupBox1.Text = "Servicio de Guatex";
@@ -458,13 +462,29 @@
             label15.TabIndex = 20;
             label15.Text = "Nombre de usuario";
             // 
+            // txtNombreRemitente
+            // 
+            txtNombreRemitente.Location = new Point(29, 313);
+            txtNombreRemitente.Name = "txtNombreRemitente";
+            txtNombreRemitente.Size = new Size(611, 23);
+            txtNombreRemitente.TabIndex = 27;
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Location = new Point(29, 295);
+            label16.Name = "label16";
+            label16.Size = new Size(124, 15);
+            label16.TabIndex = 26;
+            label16.Text = "Nombre del remitente";
+            // 
             // Preferences
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
             AutoScrollMinSize = new Size(0, 500);
-            ClientSize = new Size(704, 573);
+            ClientSize = new Size(704, 1290);
             Controls.Add(groupBox1);
             Controls.Add(statusStrip1);
             Controls.Add(menuStrip1);
@@ -542,5 +562,7 @@
         private Label label14;
         private TextBox txtUsernameServicio;
         private Label label15;
+        private TextBox txtNombreRemitente;
+        private Label label16;
     }
 }

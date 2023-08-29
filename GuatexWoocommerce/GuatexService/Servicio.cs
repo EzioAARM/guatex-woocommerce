@@ -30,13 +30,13 @@ namespace GuatexWoocommerce.GuatexService
                 foreach (var product in products)
                 {
                     lineasDetalle += $@"
-                        <LINEA_DETALLE>
+                        <LINEA_DETALLE_GUIA>
                             <PIEZAS_DETALLE>{product.Cantidad}</PIEZAS_DETALLE>
                             <PESO_DETALLE>{product.Peso}</PESO_DETALLE>
                             <TIPO_ENVIO_DETALLE>{product.TipoEnvio}</TIPO_ENVIO_DETALLE>
-                        </LINEA_DETALLE>";
+                        </LINEA_DETALLE_GUIA>";
                 }
-                string municipios = $@"
+                string tomaDeServicio = $@"
                 <soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:ser=""http://servicio.wstomaservicios.guatex.com/"">
                    <soapenv:Header/>
                    <soapenv:Body>
@@ -45,9 +45,9 @@ namespace GuatexWoocommerce.GuatexService
                          <xmlentrada>
                             <![CDATA[
                                <TOMA_SERVICIO>
-                                  <USUARIO>{Properties.Settings.Default["UsuarioServicio"]}</USUARIO>
-                                  <PASSWORD>{Properties.Settings.Default["PasswordServicio"]}</PASSWORD>
-                                  <CODIGO_COBRO>{Properties.Settings.Default["CodigoCobroServicio"]}</CODIGO_COBRO>
+                                  <USUARIO>{Properties.Settings.Default["UsuarioTomaServicio"]}</USUARIO>
+                                  <PASSWORD>{Properties.Settings.Default["PasswordTomaServicio"]}</PASSWORD>
+                                  <CODIGO_COBRO>{Properties.Settings.Default["CodigoCobroTomaServicio"]}</CODIGO_COBRO>
                                   <SERVICIO>
                                      <TIPO_USUARIO>C</TIPO_USUARIO>
                                      <NOMBRE_REMITENTE>{Properties.Settings.Default["NombreRemitente"]}</NOMBRE_REMITENTE>
@@ -64,13 +64,12 @@ namespace GuatexWoocommerce.GuatexService
                                            <TELEFONO_DESTINATARIO>{clientPhone}</TELEFONO_DESTINATARIO>
                                            <DIRECCION_DESTINATARIO>{clientFullAddress}</DIRECCION_DESTINATARIO>
                                            <MUNICIPIO_DESTINO>{clientMunicipalityId}</MUNICIPIO_DESTINO>
+                                           <PUNTO_DESTINO>A</PUNTO_DESTINO>
                                            <DESCRIPCION_ENVIO>{description}</DESCRIPCION_ENVIO>
                                            <RECOGE_OFICINA>{recogerOficina}</RECOGE_OFICINA>
                                            <CODDESTINO>{clientMunicipalityId}</CODDESTINO>
                                            <DETALLE_GUIA>
-                                              <LINEA_DETALLE_GUIA>
-                                                 {lineasDetalle}
-                                              </LINEA_DETALLE_GUIA>
+                                                {lineasDetalle}
                                            </DETALLE_GUIA>
                                      </GUIA>
                                   </SERVICIO>
@@ -80,9 +79,9 @@ namespace GuatexWoocommerce.GuatexService
                       </ser:tomaServicioGTX>
                    </soapenv:Body>
                 </soapenv:Envelope>";
-                string endpoint = Properties.Settings.Default["UrlMunicipios"].ToString();
-                XmlDocument text = BaseRequests.Execute(endpoint, municipios);
-                File.WriteAllText("service_response.txt", text.ToString());
+                string endpoint = Properties.Settings.Default["UrlTomaServicio"].ToString();
+                XmlDocument text = BaseRequests.Execute(endpoint, tomaDeServicio);
+                File.WriteAllText("service_response.txt", text.InnerText);
                 string destinosContent = "";
                 foreach (XmlNode node in text.DocumentElement.ChildNodes[0].ChildNodes[0].ChildNodes)
                 {
@@ -92,8 +91,8 @@ namespace GuatexWoocommerce.GuatexService
                     }
                 }
                 XElement elemento = XDocument.Parse(destinosContent)
-                    .Descendants("SERVICIO")
-                    .Elements()
+                    .Descendants("RESPUESTA")
+                    .Elements("SERVICIO")
                     .SingleOrDefault();
                 GuatexSolicitudServicio guatexServicio = new()
                 {
@@ -113,36 +112,7 @@ namespace GuatexWoocommerce.GuatexService
                         })
                         .ToList()
                 };
-                //.ForEach(destino =>
-                //{
-                //    guatexConsultaMunicipios.Destinos.Add(new Destino()
-                //    {
-                //        Codigo = int.Parse(destino.Element("CODIGO").Value),
-                //        Nombre = destino.Element("NOMBRE").Value,
-                //        PuntoCobertura = destino.Element("PUNTO_COBERTURA").Value,
-                //        TipoTarifa = destino.Element("TIPO_TARIFA").Value,
-                //        Departamento = destino.Element("DEPARTAMENTO")?.Value,
-                //        Municipio = destino.Element("MUNICIPIO")?.Value,
-                //        FrecuenciaVisita = destino.Element("FRECUENCIA_VISITA")?.Value,
-                //        RecogeOficina = destino.Element("RECOGE_OFICINA").Value == "1",
-                //        Depto = Convert.ToInt32(destino.Element("DEPTO")?.Value),
-                //        Muni = Convert.ToInt32(destino.Element("MUNI")?.Value),
-                //    });
-                //});
-                //XDocument.Parse(destinosContent)
-                //    .Descendants("TIPOS_ENVIO")
-                //    .Elements()
-                //    .ToList()
-                //    .ForEach(destino =>
-                //    {
-                //        guatexConsultaMunicipios.TiposEnvio.Add(new TipoEnvio()
-                //        {
-                //            Codigo = int.Parse(destino.Element("CODIGO").Value),
-                //            Nombre = destino.Element("NOMBRE").Value
-                //        });
-                //    });
-                //return guatexConsultaMunicipios;
-                return null;
+                return guatexServicio;
             }
             catch
             {
