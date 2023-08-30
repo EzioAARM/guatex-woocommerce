@@ -143,7 +143,7 @@ namespace GuatexWoocommerce
         {
             SetLoading(true, "Consultando información en GUATEX...");
 
-            List<string> departamentos = await Task.Run(() =>
+            var runningTask = Task.Run(() =>
             {
                 Consultas consultas = new();
                 MunicipiosEncontrados = consultas.ConsultaMunicipios();
@@ -154,22 +154,31 @@ namespace GuatexWoocommerce
                     .ToList();
                 return departamentos;
             });
-
-            cmbAddressDepartamento.Items.AddRange(departamentos.ToArray());
-            cmbAddressMunicipio.DataSource = null;
-            cmbAddressMunicipio.Enabled = false;
-
-            SetLoading(true, "Consultando direcciones existentes...");
-
-            Address[] addressList = await Task.Run(() =>
+            if (await Task.WhenAny(runningTask, Task.Delay((int)TimeSpan.FromSeconds(30).TotalMilliseconds)) == runningTask)
             {
-                return Program._context
-                    .Addresses
-                    .ToArray();
-            });
-            LoadAddresses(addressList);
+                List<string> departamentos = await runningTask;
 
-            SetLoading(false);
+                cmbAddressDepartamento.Items.AddRange(departamentos.ToArray());
+                cmbAddressMunicipio.DataSource = null;
+                cmbAddressMunicipio.Enabled = false;
+
+                SetLoading(true, "Consultando direcciones existentes...");
+
+                Address[] addressList = await Task.Run(() =>
+                {
+                    return Program._context
+                        .Addresses
+                        .ToArray();
+                });
+                LoadAddresses(addressList);
+
+                SetLoading(false);
+            }
+            else
+            {
+                MessageBox.Show("No se pudo conectar con el servidor de GUATEX, intente de nuevo más tarde.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
+            }
         }
 
         private void cmbAddressMunicipio_SelectedIndexChanged(object sender, EventArgs e)
@@ -191,45 +200,69 @@ namespace GuatexWoocommerce
             pbViewRecogeOficina.BackColor = destino.RecogeOficina ? Color.Green : Color.Red;
         }
 
-        private void CrearDireccion(string name, string phone, string fullAddress, string department,
+        private async Task CrearDireccion(string name, string phone, string fullAddress, string department,
             int departmentId, string municipality, int municipalityId)
         {
-            if (Program._context.Addresses.Any(x => x.Name.ToUpper().Equals(name.ToUpper())))
+            var runningTask = Task.Run(() =>
             {
-                _ = MessageBox.Show("Ya existe una dirección con el mismo nombre", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            _ = Program._context.Addresses.Add(new Address
-            {
-                Name = name,
-                Phone = phone,
-                FullAddress = fullAddress,
-                Department = department,
-                DepartmentId = departmentId,
-                Municipality = municipality,
-                MunicipalityId = municipalityId,
+                if (Program._context.Addresses.Any(x => x.Name.ToUpper().Equals(name.ToUpper())))
+                {
+                    _ = MessageBox.Show("Ya existe una dirección con el mismo nombre", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                _ = Program._context.Addresses.Add(new Address
+                {
+                    Name = name,
+                    Phone = phone,
+                    FullAddress = fullAddress,
+                    Department = department,
+                    DepartmentId = departmentId,
+                    Municipality = municipality,
+                    MunicipalityId = municipalityId,
+                });
+                _ = Program._context.SaveChanges();
             });
-            _ = Program._context.SaveChanges();
+            if (await Task.WhenAny(runningTask, Task.Delay((int)TimeSpan.FromSeconds(30).TotalMilliseconds)) == runningTask)
+            {
+                await runningTask;
+            }
+            else
+            {
+                MessageBox.Show("Hubo un problema creando la dirección", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
+            }
         }
 
-        private void ActualizarDireccion(int id, string name, string phone, string fullAddress, string department,
+        private async Task ActualizarDireccion(int id, string name, string phone, string fullAddress, string department,
             int departmentId, string municipality, int municipalityId)
         {
-            Address address = Program._context.Addresses.FirstOrDefault(x => x.Id == id);
-            if (address == null)
+            var runningTask = Task.Run(() =>
             {
-                _ = MessageBox.Show("No se encontró la dirección", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                Address address = Program._context.Addresses.FirstOrDefault(x => x.Id == id);
+                if (address == null)
+                {
+                    _ = MessageBox.Show("No se encontró la dirección", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                address.Name = name;
+                address.Phone = phone;
+                address.FullAddress = fullAddress;
+                address.Department = department;
+                address.DepartmentId = departmentId;
+                address.Municipality = municipality;
+                address.MunicipalityId = municipalityId;
+                _ = Program._context.Addresses.Update(address);
+                _ = Program._context.SaveChanges();
+            });
+            if (await Task.WhenAny(runningTask, Task.Delay((int)TimeSpan.FromSeconds(30).TotalMilliseconds)) == runningTask)
+            {
+                await runningTask;
             }
-            address.Name = name;
-            address.Phone = phone;
-            address.FullAddress = fullAddress;
-            address.Department = department;
-            address.DepartmentId = departmentId;
-            address.Municipality = municipality;
-            address.MunicipalityId = municipalityId;
-            _ = Program._context.Addresses.Update(address);
-            _ = Program._context.SaveChanges();
+            else
+            {
+                MessageBox.Show("Hubo un problema actualizando la dirección", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
+            }
         }
 
         private void SetLoading(bool loading, string loadingText = "")

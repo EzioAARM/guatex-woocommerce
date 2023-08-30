@@ -6,37 +6,44 @@ namespace GuatexWoocommerce
 {
     public partial class Preferences : Form
     {
+        List<(string propName, TextBox input)> propertiesMapping;
+
         public Preferences(bool displayIcon = false)
         {
             InitializeComponent();
+            propertiesMapping = new()
+            {
+                ("WoocommerceEndpoint", txt_endpoint),
+                ("WoocomerceConsumerKey", txt_consumer_key),
+                ("WoocommerceSecretKey", txt_consumer_secret),
+
+                ("MysqlHost", txt_dbHost),
+                ("MysqlUser", txt_dbUser),
+                ("MysqlPassword", txt_dbPass),
+                ("MysqlDatabase", txt_dbName),
+
+                ("UrlMunicipios", txtUrlMunicipios),
+                ("UsuarioMunicipios", txtUsernameMunicipios),
+                ("PasswordMunicipios", txtPasswordMunicipios),
+                ("CodigoCobroMunicipios", txtCodigoCobroMunicipios),
+
+                ("UrlTomaServicio", txtUrlTomarServicio),
+                ("UsuarioTomaServicio", txtUsernameServicio),
+                ("PasswordTomaServicio", txtPasswordServicio),
+                ("CodigoCobroTomaServicio", txtCodigoCobroServicio),
+
+                ("NombreRemitente", txtNombreRemitente),
+            };
             Height = 500;
 
             ShowInTaskbar = displayIcon;
             ShowIcon = displayIcon;
 
             // Load settings
-            txt_endpoint.Text = Properties.Settings.Default["WoocommerceEndpoint"].ToString();
-            txt_consumer_key.Text = Properties.Settings.Default["WoocomerceConsumerKey"].ToString();
-            txt_consumer_secret.Text = Properties.Settings.Default["WoocommerceSecretKey"].ToString();
-
-            txt_dbHost.Text = Properties.Settings.Default["MysqlHost"].ToString();
-            txt_dbUser.Text = Properties.Settings.Default["MysqlUser"].ToString();
-            txt_dbPass.Text = Properties.Settings.Default["MysqlPassword"].ToString();
-            txt_dbName.Text = Properties.Settings.Default["MysqlDatabase"].ToString();
-
-
-            txtUrlMunicipios.Text = Properties.Settings.Default["UrlMunicipios"].ToString();
-            txtUsernameMunicipios.Text = Properties.Settings.Default["UsuarioMunicipios"].ToString();
-            txtPasswordMunicipios.Text = Properties.Settings.Default["PasswordMunicipios"].ToString();
-            txtCodigoCobroMunicipios.Text = Properties.Settings.Default["CodigoCobroMunicipios"].ToString();
-
-
-            txtUrlTomarServicio.Text = Properties.Settings.Default["UrlTomaServicio"].ToString();
-            txtUsernameServicio.Text = Properties.Settings.Default["UsuarioTomaServicio"].ToString();
-            txtPasswordServicio.Text = Properties.Settings.Default["PasswordTomaServicio"].ToString();
-            txtCodigoCobroServicio.Text = Properties.Settings.Default["CodigoCobroTomaServicio"].ToString();
-
-            txtNombreRemitente.Text = Properties.Settings.Default["NombreRemitente"].ToString();
+            foreach ((string propName, TextBox input) in propertiesMapping)
+            {
+                input.Text = Properties.Settings.Default[propName].ToString();
+            }
         }
 
         private void btn_save_Click(object sender, EventArgs e)
@@ -47,26 +54,10 @@ namespace GuatexWoocommerce
                 return;
             }
 
-            Properties.Settings.Default["WoocommerceEndpoint"] = txt_endpoint.Text;
-            Properties.Settings.Default["WoocomerceConsumerKey"] = txt_consumer_key.Text;
-            Properties.Settings.Default["WoocommerceSecretKey"] = txt_consumer_secret.Text;
-
-            Properties.Settings.Default["MysqlHost"] = txt_dbHost.Text;
-            Properties.Settings.Default["MysqlUser"] = txt_dbUser.Text;
-            Properties.Settings.Default["MysqlPassword"] = txt_dbPass.Text;
-            Properties.Settings.Default["MysqlDatabase"] = txt_dbName.Text;
-
-            Properties.Settings.Default["UrlMunicipios"] = txtUrlMunicipios.Text;
-            Properties.Settings.Default["UsuarioMunicipios"] = txtUsernameMunicipios.Text;
-            Properties.Settings.Default["PasswordMunicipios"] = txtPasswordMunicipios.Text;
-            Properties.Settings.Default["CodigoCobroMunicipios"] = txtCodigoCobroMunicipios.Text;
-
-            Properties.Settings.Default["UrlTomaServicio"] = txtUrlTomarServicio.Text;
-            Properties.Settings.Default["UsuarioTomaServicio"] = txtUsernameServicio.Text;
-            Properties.Settings.Default["PasswordTomaServicio"] = txtPasswordServicio.Text;
-            Properties.Settings.Default["CodigoCobroTomaServicio"] = txtCodigoCobroServicio.Text;
-
-            Properties.Settings.Default["NombreRemitente"] = txtNombreRemitente.Text;
+            foreach ((string propName, TextBox input) in propertiesMapping)
+            {
+                Properties.Settings.Default[propName] = input.Text;
+            }
 
             Properties.Settings.Default.Save();
 
@@ -105,26 +96,14 @@ namespace GuatexWoocommerce
                         .ToList();
 
                     // Load settings
-                    txt_endpoint.Text = data.FirstOrDefault(x => x.Key.Equals("WoocommerceEndpoint"))?.Value;
-                    txt_consumer_key.Text = data.FirstOrDefault(x => x.Key.Equals("WoocomerceConsumerKey"))?.Value;
-                    txt_consumer_secret.Text = data.FirstOrDefault(x => x.Key.Equals("WoocommerceSecretKey"))?.Value;
-
-                    txt_dbHost.Text = data.FirstOrDefault(x => x.Key.Equals("MysqlHost"))?.Value;
-                    txt_dbUser.Text = data.FirstOrDefault(x => x.Key.Equals("MysqlUser"))?.Value;
-                    txt_dbPass.Text = data.FirstOrDefault(x => x.Key.Equals("MysqlPassword"))?.Value;
-                    txt_dbName.Text = data.FirstOrDefault(x => x.Key.Equals("MysqlDatabase"))?.Value;
-
-
-                    txtUrlMunicipios.Text = data.FirstOrDefault(x => x.Key.Equals("UrlMunicipios"))?.Value;
-                    txtUsernameMunicipios.Text = data.FirstOrDefault(x => x.Key.Equals("UsuarioMunicipios"))?.Value;
-                    txtPasswordMunicipios.Text = data.FirstOrDefault(x => x.Key.Equals("PasswordMunicipios"))?.Value;
-                    txtCodigoCobroMunicipios.Text = data.FirstOrDefault(x => x.Key.Equals("CodigoCobroMunicipios"))?.Value;
-
-                    txtUrlTomarServicio.Text = data.FirstOrDefault(x => x.Key.Equals("UrlTomaServicio"))?.Value;
-                    txtUsernameServicio.Text = data.FirstOrDefault(x => x.Key.Equals("UsuarioTomaServicio"))?.Value;
-                    txtPasswordServicio.Text = data.FirstOrDefault(x => x.Key.Equals("PasswordTomaServicio"))?.Value;
-                    txtCodigoCobroServicio.Text = data.FirstOrDefault(x => x.Key.Equals("CodigoCobroTomaServicio"))?.Value;
-                    txtNombreRemitente.Text = data.FirstOrDefault(x => x.Key.Equals("NombreRemitente"))?.Value;
+                    foreach ((string propName, TextBox input) in propertiesMapping)
+                    {
+                        KeyValueSettings setting = data.FirstOrDefault(x => x.Key.Equals(propName));
+                        if (setting != null)
+                        {
+                            input.Text = setting?.Value;
+                        }
+                    }
 
                     _ = MessageBox.Show("Cambios importados con éxito, antes de salir debe guardar las configuraciones importadas", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }

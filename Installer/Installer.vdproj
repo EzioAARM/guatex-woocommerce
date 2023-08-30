@@ -82,6 +82,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -190,22 +198,22 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:GuatexWoocommerce"
-        "ProductCode" = "8:{0DB20DAC-BB49-4199-BD6F-C7E33EE38A4E}"
-        "PackageCode" = "8:{0B4F28F7-1AF2-4072-99A9-5858358D2DE3}"
+        "ProductCode" = "8:{0328FC32-0555-41B5-856E-B27DD70AA645}"
+        "PackageCode" = "8:{4EF149A9-CDE2-4743-8384-97CDC8CF31E4}"
         "UpgradeCode" = "8:{A7CF2621-F822-4B86-B59C-9040143E23E7}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.0.1"
         "Manufacturer" = "8:A&A S.A"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:GuatexWoocommerce"
         "Subject" = "8:"
         "ARPCONTACT" = "8:A&A S.A"
-        "Keywords" = "8:"
+        "Keywords" = "8:Guatex,Woocommerce,logistica"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
         "ARPPRODUCTICON" = "8:"

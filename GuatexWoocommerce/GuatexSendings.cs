@@ -127,22 +127,30 @@ namespace GuatexWoocommerce
                 {
                     return;
                 }
-                List<WoocommerceOrder> orders = await OrderRequest.FindOrderAsync(txt_order.Text);
-                int index = 0;
-                foreach (WoocommerceOrder order in orders)
+                var runningTask = OrderRequest.FindOrderAsync(txt_order.Text);
+                if (await Task.WhenAny(runningTask, Task.Delay((int)TimeSpan.FromSeconds(30).TotalMilliseconds)) == runningTask)
                 {
-                    _ = dgv_orders.Rows.Add(new DataGridViewRow());
-                    foreach (PropertyInfo header in order.GetType().GetProperties())
+                    List<WoocommerceOrder> orders = await runningTask;
+                    int index = 0;
+                    foreach (WoocommerceOrder order in orders)
                     {
-                        if (dgv_orders.Columns.Contains(header.Name))
+                        _ = dgv_orders.Rows.Add(new DataGridViewRow());
+                        foreach (PropertyInfo header in order.GetType().GetProperties())
                         {
-                            dgv_orders[header.Name, index] = new DataGridViewTextBoxCell
+                            if (dgv_orders.Columns.Contains(header.Name))
                             {
-                                Value = order.GetType().GetProperty(header.Name).GetValue(order, null)
-                            };
+                                dgv_orders[header.Name, index] = new DataGridViewTextBoxCell
+                                {
+                                    Value = order.GetType().GetProperty(header.Name).GetValue(order, null)
+                                };
+                            }
                         }
+                        index++;
                     }
-                    index++;
+                }
+                else
+                {
+                    MessageBox.Show("Hubo un error buscando las ordenes", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (ConfigurationErrorsException ex)

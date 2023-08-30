@@ -140,9 +140,9 @@
             txtOrderId.BorderStyle = BorderStyle.None;
             txtOrderId.Enabled = false;
             txtOrderId.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtOrderId.Location = new Point(177, 37);
+            txtOrderId.Location = new Point(199, 37);
             txtOrderId.Name = "txtOrderId";
-            txtOrderId.Size = new Size(326, 22);
+            txtOrderId.Size = new Size(304, 22);
             txtOrderId.TabIndex = 19;
             // 
             // lblId
@@ -183,10 +183,10 @@
             txtOrderNote.BackColor = SystemColors.ControlLightLight;
             txtOrderNote.BorderStyle = BorderStyle.None;
             txtOrderNote.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtOrderNote.Location = new Point(177, 283);
+            txtOrderNote.Location = new Point(199, 283);
             txtOrderNote.Name = "txtOrderNote";
             txtOrderNote.ReadOnly = true;
-            txtOrderNote.Size = new Size(326, 104);
+            txtOrderNote.Size = new Size(304, 104);
             txtOrderNote.TabIndex = 31;
             txtOrderNote.Text = "";
             // 
@@ -216,9 +216,9 @@
             txtOrderTotal.BorderStyle = BorderStyle.None;
             txtOrderTotal.Enabled = false;
             txtOrderTotal.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtOrderTotal.Location = new Point(177, 242);
+            txtOrderTotal.Location = new Point(199, 242);
             txtOrderTotal.Name = "txtOrderTotal";
-            txtOrderTotal.Size = new Size(326, 22);
+            txtOrderTotal.Size = new Size(304, 22);
             txtOrderTotal.TabIndex = 29;
             // 
             // label4
@@ -237,9 +237,9 @@
             txtOrderShippingTotal.BorderStyle = BorderStyle.None;
             txtOrderShippingTotal.Enabled = false;
             txtOrderShippingTotal.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtOrderShippingTotal.Location = new Point(177, 201);
+            txtOrderShippingTotal.Location = new Point(199, 201);
             txtOrderShippingTotal.Name = "txtOrderShippingTotal";
-            txtOrderShippingTotal.Size = new Size(326, 22);
+            txtOrderShippingTotal.Size = new Size(304, 22);
             txtOrderShippingTotal.TabIndex = 27;
             // 
             // label3
@@ -258,9 +258,9 @@
             txtOrderCreatedDate.BorderStyle = BorderStyle.None;
             txtOrderCreatedDate.Enabled = false;
             txtOrderCreatedDate.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtOrderCreatedDate.Location = new Point(177, 160);
+            txtOrderCreatedDate.Location = new Point(199, 160);
             txtOrderCreatedDate.Name = "txtOrderCreatedDate";
-            txtOrderCreatedDate.Size = new Size(326, 22);
+            txtOrderCreatedDate.Size = new Size(304, 22);
             txtOrderCreatedDate.TabIndex = 25;
             // 
             // label2
@@ -279,9 +279,9 @@
             txtOrderStatus.BorderStyle = BorderStyle.None;
             txtOrderStatus.Enabled = false;
             txtOrderStatus.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtOrderStatus.Location = new Point(177, 119);
+            txtOrderStatus.Location = new Point(199, 119);
             txtOrderStatus.Name = "txtOrderStatus";
-            txtOrderStatus.Size = new Size(326, 22);
+            txtOrderStatus.Size = new Size(304, 22);
             txtOrderStatus.TabIndex = 23;
             // 
             // label1
@@ -300,9 +300,9 @@
             txtOrderNumber.BorderStyle = BorderStyle.None;
             txtOrderNumber.Enabled = false;
             txtOrderNumber.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtOrderNumber.Location = new Point(177, 78);
+            txtOrderNumber.Location = new Point(199, 78);
             txtOrderNumber.Name = "txtOrderNumber";
-            txtOrderNumber.Size = new Size(326, 22);
+            txtOrderNumber.Size = new Size(304, 22);
             txtOrderNumber.TabIndex = 21;
             // 
             // dgvOrderItems
@@ -361,9 +361,9 @@
             txtClientPostalCode.BorderStyle = BorderStyle.None;
             txtClientPostalCode.Enabled = false;
             txtClientPostalCode.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtClientPostalCode.Location = new Point(212, 365);
+            txtClientPostalCode.Location = new Point(253, 365);
             txtClientPostalCode.Name = "txtClientPostalCode";
-            txtClientPostalCode.Size = new Size(392, 22);
+            txtClientPostalCode.Size = new Size(351, 22);
             txtClientPostalCode.TabIndex = 35;
             // 
             // txtClientState
@@ -372,9 +372,9 @@
             txtClientState.BorderStyle = BorderStyle.None;
             txtClientState.Enabled = false;
             txtClientState.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtClientState.Location = new Point(212, 324);
+            txtClientState.Location = new Point(253, 324);
             txtClientState.Name = "txtClientState";
-            txtClientState.Size = new Size(392, 22);
+            txtClientState.Size = new Size(351, 22);
             txtClientState.TabIndex = 33;
             // 
             // label13
@@ -403,9 +403,9 @@
             txtClientCity.BorderStyle = BorderStyle.None;
             txtClientCity.Enabled = false;
             txtClientCity.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtClientCity.Location = new Point(212, 283);
+            txtClientCity.Location = new Point(253, 283);
             txtClientCity.Name = "txtClientCity";
-            txtClientCity.Size = new Size(392, 22);
+            txtClientCity.Size = new Size(351, 22);
             txtClientCity.TabIndex = 31;
             // 
             // label6
@@ -424,9 +424,9 @@
             txtClientAddress.BorderStyle = BorderStyle.None;
             txtClientAddress.Enabled = false;
             txtClientAddress.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtClientAddress.Location = new Point(212, 242);
+            txtClientAddress.Location = new Point(253, 242);
             txtClientAddress.Name = "txtClientAddress";
-            txtClientAddress.Size = new Size(392, 22);
+            txtClientAddress.Size = new Size(351, 22);
             txtClientAddress.TabIndex = 29;
             // 
             // label7
@@ -445,9 +445,9 @@
             txtClientEmail.BorderStyle = BorderStyle.None;
             txtClientEmail.Enabled = false;
             txtClientEmail.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtClientEmail.Location = new Point(212, 201);
+            txtClientEmail.Location = new Point(253, 201);
             txtClientEmail.Name = "txtClientEmail";
-            txtClientEmail.Size = new Size(392, 22);
+            txtClientEmail.Size = new Size(351, 22);
             txtClientEmail.TabIndex = 27;
             // 
             // label8
@@ -466,9 +466,9 @@
             txtClientPhone.BorderStyle = BorderStyle.None;
             txtClientPhone.Enabled = false;
             txtClientPhone.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtClientPhone.Location = new Point(212, 160);
+            txtClientPhone.Location = new Point(253, 160);
             txtClientPhone.Name = "txtClientPhone";
-            txtClientPhone.Size = new Size(392, 22);
+            txtClientPhone.Size = new Size(351, 22);
             txtClientPhone.TabIndex = 25;
             // 
             // label9
@@ -487,9 +487,9 @@
             txtClientLastName.BorderStyle = BorderStyle.None;
             txtClientLastName.Enabled = false;
             txtClientLastName.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtClientLastName.Location = new Point(212, 119);
+            txtClientLastName.Location = new Point(253, 119);
             txtClientLastName.Name = "txtClientLastName";
-            txtClientLastName.Size = new Size(392, 22);
+            txtClientLastName.Size = new Size(351, 22);
             txtClientLastName.TabIndex = 23;
             // 
             // label10
@@ -508,9 +508,9 @@
             txtClientFirstName.BorderStyle = BorderStyle.None;
             txtClientFirstName.Enabled = false;
             txtClientFirstName.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtClientFirstName.Location = new Point(212, 78);
+            txtClientFirstName.Location = new Point(253, 78);
             txtClientFirstName.Name = "txtClientFirstName";
-            txtClientFirstName.Size = new Size(392, 22);
+            txtClientFirstName.Size = new Size(351, 22);
             txtClientFirstName.TabIndex = 21;
             // 
             // label11
@@ -529,9 +529,9 @@
             txtClientId.BorderStyle = BorderStyle.None;
             txtClientId.Enabled = false;
             txtClientId.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtClientId.Location = new Point(212, 37);
+            txtClientId.Location = new Point(253, 37);
             txtClientId.Name = "txtClientId";
-            txtClientId.Size = new Size(392, 22);
+            txtClientId.Size = new Size(351, 22);
             txtClientId.TabIndex = 19;
             // 
             // lblDireccion
@@ -549,9 +549,9 @@
             txtDireccion.BackColor = SystemColors.ControlLightLight;
             txtDireccion.BorderStyle = BorderStyle.None;
             txtDireccion.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtDireccion.Location = new Point(801, 643);
+            txtDireccion.Location = new Point(812, 643);
             txtDireccion.Name = "txtDireccion";
-            txtDireccion.Size = new Size(351, 22);
+            txtDireccion.Size = new Size(340, 22);
             txtDireccion.TabIndex = 37;
             // 
             // label17
@@ -580,9 +580,9 @@
             cmbDepartamento.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             cmbDepartamento.FormattingEnabled = true;
             cmbDepartamento.ImeMode = ImeMode.Off;
-            cmbDepartamento.Location = new Point(801, 558);
+            cmbDepartamento.Location = new Point(812, 558);
             cmbDepartamento.Name = "cmbDepartamento";
-            cmbDepartamento.Size = new Size(351, 29);
+            cmbDepartamento.Size = new Size(340, 29);
             cmbDepartamento.TabIndex = 38;
             cmbDepartamento.SelectedIndexChanged += cmbDepartamento_SelectedIndexChanged;
             // 
@@ -592,9 +592,9 @@
             cmbMunicipio.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             cmbMunicipio.FormattingEnabled = true;
             cmbMunicipio.ImeMode = ImeMode.Off;
-            cmbMunicipio.Location = new Point(801, 599);
+            cmbMunicipio.Location = new Point(812, 599);
             cmbMunicipio.Name = "cmbMunicipio";
-            cmbMunicipio.Size = new Size(351, 29);
+            cmbMunicipio.Size = new Size(340, 29);
             cmbMunicipio.TabIndex = 39;
             // 
             // btnCrearActualizar
@@ -612,7 +612,7 @@
             // 
             cb_recogerOficina.AutoSize = true;
             cb_recogerOficina.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            cb_recogerOficina.Location = new Point(801, 495);
+            cb_recogerOficina.Location = new Point(812, 495);
             cb_recogerOficina.Name = "cb_recogerOficina";
             cb_recogerOficina.Size = new Size(205, 29);
             cb_recogerOficina.TabIndex = 41;
@@ -636,9 +636,9 @@
             cmbSendFrom.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             cmbSendFrom.FormattingEnabled = true;
             cmbSendFrom.ImeMode = ImeMode.Off;
-            cmbSendFrom.Location = new Point(801, 460);
+            cmbSendFrom.Location = new Point(812, 460);
             cmbSendFrom.Name = "cmbSendFrom";
-            cmbSendFrom.Size = new Size(351, 29);
+            cmbSendFrom.Size = new Size(340, 29);
             cmbSendFrom.TabIndex = 43;
             // 
             // label19
