@@ -347,6 +347,7 @@ namespace GuatexWoocommerce
                     errorLines.Add($"{GenerateApiloDate()} StackTrace: '{ex.StackTrace}'");
                     File.AppendAllLines("error.log", errorLines);
                     MessageBox.Show("Hubo un error inesperado");
+                    Close();
                 }
             }
         }
