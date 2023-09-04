@@ -226,5 +226,29 @@ namespace GuatexWoocommerce.Properties {
                 this["NombreRemitente"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TelefonoRemitente {
+            get {
+                return ((string)(this["TelefonoRemitente"]));
+            }
+            set {
+                this["TelefonoRemitente"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string UrlEliminarGuia {
+            get {
+                return ((string)(this["UrlEliminarGuia"]));
+            }
+            set {
+                this["UrlEliminarGuia"] = value;
+            }
+        }
     }
 }

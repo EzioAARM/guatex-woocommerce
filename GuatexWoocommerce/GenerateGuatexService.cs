@@ -3,6 +3,7 @@ using GuatexWoocommerce.GuatexService;
 using GuatexWoocommerce.Models;
 using GuatexWoocommerce.WoocommerceApi;
 using Microsoft.VisualBasic;
+using System.Net;
 using System.Reflection;
 
 namespace GuatexWoocommerce
@@ -12,6 +13,8 @@ namespace GuatexWoocommerce
         private readonly ulong _orderId;
 
         private WoocommerceOrder _order;
+
+        private GuiasGeneradas _guiaEncontrada;
 
         private GuatexConsultaMunicipios MunicipiosEncontrados = null;
 
@@ -94,6 +97,10 @@ namespace GuatexWoocommerce
             cmbSendFrom.SelectedIndex = position;
         }
 
+        /// <summary>
+        /// Carga los productos del pedido en un datagridview
+        /// </summary>
+        /// <param name="products"></param>
         private void LoadProducts(List<WoocommerceOrderLine> products)
         {
             dgvOrderItems.Rows.Clear();
@@ -115,6 +122,11 @@ namespace GuatexWoocommerce
             }
         }
 
+        /// <summary>
+        /// Coloca la el form en estado de carga
+        /// </summary>
+        /// <param name="loading">Indica si está cargando</param>
+        /// <param name="loadingText">Texto de estado</param>
         private void SetLoading(bool loading, string loadingText = "")
         {
             if (loading)
@@ -140,16 +152,15 @@ namespace GuatexWoocommerce
             }
         }
 
-        private void GenerateGuatexService_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private async void GenerateGuatexService_Shown(object sender, EventArgs e)
         {
             SetLoading(true, "Cargando información de la orden...");
 
             _order = await OrderRequest.GetOrderAsync(_orderId);
+            if (_order.Status.Equals("completed"))
+            {
+                generate_panel.Visible = false;
+            }
             txtOrderId.Text = _order.Id.ToString();
             txtOrderNumber.Text = _order.Number.ToString();
             txtOrderStatus.Text = _order.Status;
@@ -193,15 +204,46 @@ namespace GuatexWoocommerce
                 cmbDepartamento.Items.AddRange(departamentos.ToArray());
                 cmbMunicipio.DataSource = null;
                 cmbMunicipio.Enabled = false;
-                SetLoading(false);
             }
             else
             {
                 MessageBox.Show("Hubo un error cargando la información de Guatex, intente nuevamente en unos momentos");
                 Close();
             }
+            _guiaEncontrada = Program._context.Guias.FirstOrDefault(x => x.IdOrden == _orderId && !x.Anulada);
+            if (_guiaEncontrada == null)
+            {
+                generate_panel.Visible = true;
+                panelGuia.Visible = false;
+            }
+            else
+            {
+                generate_panel.Visible = false;
+                panelGuia.Visible = true;
+                GeneratePlz(
+                    numero_guia: _guiaEncontrada.NumeroGuia,
+                    remitente: _guiaEncontrada.Remitente,
+                    direccion_remitente: _guiaEncontrada.DireccionRemitente,
+                    telefono_remitente: _guiaEncontrada.TelefonoRemitente,
+                    destinatario: _guiaEncontrada.Destinatario,
+                    direccion_destinatario: _guiaEncontrada.DireccionDestinatario,
+                    telefono_destinatario: _guiaEncontrada.TelefonoDestinatario,
+                    descripcion_envio: _guiaEncontrada.DescripcionEnvio,
+                    guia_actual: _guiaEncontrada.GuiaActual,
+                    total_guias: _guiaEncontrada.TotalGuias,
+                    cantidad_piezas: _guiaEncontrada.CantidadPiezas,
+                    peso: _guiaEncontrada.PesoTotal,
+                    forma_pago: _guiaEncontrada.FormaPago,
+                    codigo_cobro: _guiaEncontrada.CodigoCobro,
+                    fecha: _guiaEncontrada.Fecha);
+            }
+            SetLoading(false);
         }
 
+        /// <summary>
+        /// Genera una fecha en formato de apilo para log de errores
+        /// </summary>
+        /// <returns>Fecha en formato [{DateTime.Now:yyyy'-'MM'-'dd'T'HH':'mm':'ss}]</returns>
         private static string GenerateApiloDate()
         {
             return $"[{DateTime.Now:yyyy'-'MM'-'dd'T'HH':'mm':'ss}]";
@@ -249,6 +291,8 @@ namespace GuatexWoocommerce
                                     .GetResult();
                                 string peso = product.Weight;
                                 bool falla = true;
+                                if (peso != "0" || !string.IsNullOrEmpty(peso))
+                                    falla = false;
                                 if (string.IsNullOrEmpty(peso))
                                 {
                                     int intentos = 0;
@@ -299,10 +343,11 @@ namespace GuatexWoocommerce
                     string address = txtDireccion.Text;
                     string orderNote = txtOrderNote.Text;
                     bool pickInOffice = cb_recogerOficina.Checked;
+                    // Solicita la generación de guía
                     var runningTask = Task.Run(() =>
                     {
                         GuatexSolicitudServicio requestedService = servicio.Solicitar(
-                            addressPhone: clientPhone,
+                            addressPhone: $"{Properties.Settings.Default["TelefonoRemitente"]}",
                             sendFromAddress: sendFromAddress.FullAddress,
                             idMunicipalityFrom: sendFromAddress.MunicipalityId,
                             clientId: clientId,
@@ -328,14 +373,34 @@ namespace GuatexWoocommerce
                             orderId: _order.Id.Value,
                             status: "completed");
                     errorLines.Add($"{GenerateApiloDate()} Actualización de estado de la orden: Ok");
-                    string note = $@"Su número de guía Guatex es: {servicioSolicitado.Guias.First().Numero}, puede consultarla <a href='https://servicios.guatex.gt/Guatex/Tracking/'>aquí</a>.";
+                    string note = $@"Su número de guía Guatex es: {servicioSolicitado.Codigo}, puede consultarla <a href='http://ws.guatex.gt/ConsultaWebPrm/Consultar.aspx?numerodeguia={servicioSolicitado.Codigo}'>aquí</a>.";
                     OrderRequest.AddNoteToOrder(
                             orderId: _order.Id.Value,
                             note: note);
                     errorLines.Add($"{GenerateApiloDate()} Nota agregada a la orden: '{note}'");
-                    MessageBox.Show($"La guía se generó correctamente, el número de guía es: {servicioSolicitado.Guias.First().Numero}", "Guía generada", MessageBoxButtons.OK);
-                    Enabled = true;
-                    Close();
+                    GuiasGeneradas guiaGenerada = new()
+                    {
+                        IdOrden = _order.Id.Value,
+                        NumeroGuia = $"{servicioSolicitado.Guias.First().Numero}",
+                        Remitente = $"{Properties.Settings.Default["NombreRemitente"]}",
+                        DireccionRemitente = $"{sendFromAddress.FullAddress}",
+                        TelefonoRemitente = $"{Properties.Settings.Default["TelefonoRemitente"]}",
+                        Destinatario = $"{firstName} {lastName}",
+                        DireccionDestinatario = $"{address}",
+                        TelefonoDestinatario = $"{clientPhone}",
+                        GuiaActual = $"1",
+                        TotalGuias = $"1",
+                        DescripcionEnvio = $"{dgvOrderItems.Rows.Count} Productos",
+                        CantidadPiezas = $"{detalleGuia.Count()}",
+                        PesoTotal = $"{detalleGuia.Select(x => x.Peso).Sum()}",
+                        FormaPago = $"COBRO",
+                        CodigoCobro = $"{Properties.Settings.Default["CodigoCobroTomaServicio"]}",
+                        Fecha = $"{DateTime.Now:dd/MM/yyyy}",
+                        Anulada = false
+                    };
+                    Program._context.Guias.Add(guiaGenerada);
+                    Program._context.SaveChanges();
+                    MessageBox.Show($"La guía se generó correctamente, el número de guía es: {servicioSolicitado.Codigo}", "Guía generada", MessageBoxButtons.OK);
                 }
                 catch (ArgumentException ex)
                 {
@@ -345,11 +410,53 @@ namespace GuatexWoocommerce
                 {
                     errorLines.Add($"{GenerateApiloDate()} Excepción: '{ex.Message}'");
                     errorLines.Add($"{GenerateApiloDate()} StackTrace: '{ex.StackTrace}'");
-                    File.AppendAllLines("error.log", errorLines);
+                    //File.AppendAllLines("error.log", errorLines);
                     MessageBox.Show("Hubo un error inesperado");
+                }
+                finally
+                {
+                    Enabled = true;
                     Close();
                 }
             }
+        }
+
+        /// <summary>
+        /// Genera la imágen de la guía en formato PLZ
+        /// </summary>
+        /// <param name="numero_guia">Número de la guía</param>
+        /// <param name="remitente">Quien envía el paquete</param>
+        /// <param name="direccion_remitente">Dirección desde donde se envía</param>
+        /// <param name="telefono_remitente">Teléfono del remitente</param>
+        /// <param name="destinatario">Quien recibe el paquete</param>
+        /// <param name="direccion_destinatario">Dirección a la que se envía el paquete</param>
+        /// <param name="telefono_destinatario">Teléfono del destinatario</param>
+        /// <param name="descripcion_envio">Descripción de que contiene el pedido</param>
+        /// <param name="guia_actual">Número de guía actual sobre la cantidad de guías a generar para este pedido</param>
+        /// <param name="total_guias">Cantidad total de guías para este pedido</param>
+        /// <param name="cantidad_piezas">Cantidad de piezas que se envían</param>
+        /// <param name="peso">Peso del pedido</param>
+        /// <param name="forma_pago"></param>
+        /// <param name="codigo_cobro">Código de cobro de Guatex</param>
+        /// <param name="fecha">Fecha que se realiza el envío</param>
+        private void GeneratePlz(string numero_guia, string remitente, string direccion_remitente, string telefono_remitente,
+            string destinatario, string direccion_destinatario, string telefono_destinatario,
+            string descripcion_envio, string guia_actual, string total_guias, string cantidad_piezas,
+            string peso, string forma_pago, string codigo_cobro, string fecha)
+        {
+            string plzText = @$"^XA^SZ2^PW609^LL1256^PON^PR6,6^PMN^MNY^LS-20^MTD^MMT,N^MPE^FS^JUS^LRN^CI0^FS^FO1,1,0^A0N,N,30,30^FD ^FS^FT1,160^BY3 ^A0N,40,30 ^BC,100,N,N,N,A^FD{numero_guia}^FS^FO3,170,0^AAN,N,15,15^FDCAP - {numero_guia}^FS^FO0,220,0^A0N,N,25,25^FDRemitente: {remitente} (CREDI^FS^FO0,245,0^A0N,N,25,25^FDTO)^FS^FO0,270,0^A0N,N,25,25^FH\\^FDDirecci\\A2n:{direccion_remitente}^FS^FO0,295,0^A0N,N,25,25^FH\\^FD{""}^FS^FO0,350,0^A0N,N,25,25^FH\\^FDTel\\82fono: {telefono_remitente}^FS^FO10,390,0^AAN,N,25,10^FD{numero_guia}^FS^FO340,350,0^IME:IMG.GRF,1,1^FS^FO0,475,0^A0N,N,25,25^FH\\^FDDestinatario: {destinatario}^FS^FO0,525,0^A0N,N,25,25^FH\\^FDDirecci\\A2n:{direccion_destinatario}^FS^FO0,600,0^A0N,N,25,25^FH\\^FDTel\\82fono: {telefono_destinatario}^FS^FO45,625,0^A0N,N,250,70^FDCAP^FS^LRY^FO230,1050,0^A0N,N,150,70^FD{guia_actual}/{total_guias}^FS^FO355,780,0^A0N,N,25,25^FD ^FS^FO10,830,0^A0N,N,20,24^FH\\^FDDesc. Env\\A1o: {descripcion_envio}^FS^FO0,930,0^A0N,N,24,24^FDNo. Piezas: {cantidad_piezas}   Peso: {peso}   Forma de pago :{forma_pago}   Co^FS^FO0,960,0^A0N,N,24,24^FDdigo de cobro:{codigo_cobro}   Fecha:   {fecha}^FS^FO0,1010,0^BQ,2,7^FDQA,{numero_guia}|CAP^FS^FWN^XZ";
+            string endpoint = $"http://api.labelary.com/v1/printers/8dpmm/labels/4x6/0/{plzText}";
+
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(endpoint);
+            HttpWebResponse response = (HttpWebResponse)req.GetResponse();
+
+            Stream stream = response.GetResponseStream();
+            System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
+            imagenGuia.BackgroundImage = img;
+            if (!Directory.Exists("guias"))
+                Directory.CreateDirectory("guias");
+            img.Save($"guias\\{numero_guia}.png");
+            stream.Close();
         }
 
         private void cmbDepartamento_SelectedIndexChanged(object sender, EventArgs e)
@@ -375,6 +482,64 @@ namespace GuatexWoocommerce
 
             txtDireccion.Visible = !cb_recogerOficina.Checked;
             lblDireccion.Visible = !cb_recogerOficina.Checked;
+        }
+
+        private void btn_ver_guia_Click(object sender, EventArgs e)
+        {
+            // Ver la imágen de la guía en la pantalla
+            System.Diagnostics.Process.Start("explorer.exe", $"{Directory.GetCurrentDirectory()}\\guias\\{_guiaEncontrada.NumeroGuia}.png");
+        }
+
+        private void btnImprimirGuia_Click(object sender, EventArgs e)
+        {
+            ChromePdfRenderer Renderer = new();
+            using PdfDocument Pdf = Renderer.RenderUrlAsPdf($"{Directory.GetCurrentDirectory()}\\guias\\{_guiaEncontrada.NumeroGuia}.png");
+
+            PrintDialog printDialog = new()
+            {
+                Document = Pdf.GetPrintDocument(),
+                AllowSomePages = false
+            };
+            if (printDialog.ShowDialog() == DialogResult.OK)
+            {
+                Pdf.Print();
+            }
+        }
+
+        private void btnCancelarGuia_Click(object sender, EventArgs e)
+        {
+            // Canclear la guía en Guatex y en la base de datos
+            SetLoading(true, "Cancelando guía...");
+            try
+            {
+                DialogResult dialogResult = MessageBox.Show("¿Está seguro que desea cancelar la guía?", "Cancelar guía", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    Servicio servicio = new();
+                    servicio.Cancelar(_guiaEncontrada.NumeroGuia);
+                    _guiaEncontrada.Anulada = true;
+                    Program._context.Update(_guiaEncontrada);
+                    Program._context.SaveChanges();
+
+                    string note = $@"El envío de su pedido fue cancelado.";
+                    OrderRequest.AddNoteToOrder(
+                            orderId: _order.Id.Value,
+                            note: note);
+
+                    _guiaEncontrada = null;
+                    generate_panel.Visible = true;
+                    panelGuia.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                MessageBox.Show("No se pudo cancelar la guía", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                SetLoading(false);
+            }
         }
     }
 }

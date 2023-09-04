@@ -197,7 +197,7 @@ namespace GuatexWoocommerce
             txtViewDepartamento.Text = $"{destino.Departamento} ({destino.Depto})";
             txtViewMunicipio.Text = $"{destino.Municipio} ({destino.Muni})";
             txtViewFrecuenciaVisita.Text = destino.FrecuenciaVisita;
-            pbViewRecogeOficina.BackColor = destino.RecogeOficina ? Color.Green : Color.Red;
+            pbViewRecogeOficina.BackColor = destino.RecogeOficina ? System.Drawing.Color.Green : System.Drawing.Color.Red;
         }
 
         private async Task CrearDireccion(string name, string phone, string fullAddress, string department,

@@ -119,5 +119,32 @@ namespace GuatexWoocommerce.GuatexService
                 throw;
             }
         }
+
+        public bool Cancelar(string numeroGuia)
+        {
+            string eliminarGuia = $@"
+                <soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:ser=""http://servicio.wstomaservicios.guatex.com/"">
+                   <soapenv:Header/>
+                   <soapenv:Body>
+                      <ser:eliminarServicioGTX>
+                         <!--Optional:-->
+                         <xmlentrada>
+         	                <![CDATA[
+                               <ELIMINAR_GUIA>
+                                  <USUARIO>{Properties.Settings.Default["UsuarioTomaServicio"]}</USUARIO>
+                                  <PASSWORD>{Properties.Settings.Default["PasswordTomaServicio"]}</PASSWORD>
+                                  <CODIGO_COBRO>{Properties.Settings.Default["CodigoCobroTomaServicio"]}</CODIGO_COBRO>
+                                  <NUMERO_GUIA>{numeroGuia}</NUMERO_GUIA>
+                               </ELIMINAR_GUIA>
+	                        ]]>
+                         </xmlentrada>
+                      </ser:eliminarServicioGTX>
+                   </soapenv:Body>
+                </soapenv:Envelope>";
+            string endpoint = Properties.Settings.Default["UrlEliminarGuia"].ToString();
+            XmlDocument text = BaseRequests.Execute(endpoint, eliminarGuia);
+            if (text.InnerText.Contains("<EXITO>")) return true;
+            else throw new Exception("Hubo un error cancelando la guía");
+        }
     }
 }

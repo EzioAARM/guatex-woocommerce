@@ -10,6 +10,11 @@ namespace GuatexWoocommerce
         /// </summary>
         public DbSet<Address> Addresses { get; set; }
 
+        /// <summary>
+        /// Guias generadas para Guatex
+        /// </summary>
+        public DbSet<GuiasGeneradas> Guias { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

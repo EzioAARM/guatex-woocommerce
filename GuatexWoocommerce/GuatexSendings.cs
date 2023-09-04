@@ -69,20 +69,37 @@ namespace GuatexWoocommerce
 
             Program._context = new DatabaseContext();
 
-            (string endpoint, string key, string secret) = Program.GetWoocommerceSettings();
-            (string host, string user, string password, string database) = Program.GetMysqlSettings();
-            (string urlMunicipios, string municipiosUsername, string municipiosPassword, string codigoCobro) = Program.GetGuatexMunicipiosSettings();
-            (string urlServicio, string servicioUsername, string servicioPassword, string codigoCobroServicio) = Program.GetGuatexTomaServiciosSettings();
-            if (string.IsNullOrEmpty(endpoint) || string.IsNullOrEmpty(key) || string.IsNullOrEmpty(secret) ||
-                string.IsNullOrEmpty(host) || string.IsNullOrEmpty(user) || string.IsNullOrEmpty(password) ||
-                string.IsNullOrEmpty(database) || string.IsNullOrEmpty(urlMunicipios) || string.IsNullOrEmpty(municipiosUsername) ||
-                string.IsNullOrEmpty(municipiosPassword) || string.IsNullOrEmpty(codigoCobro) || string.IsNullOrEmpty(urlServicio) ||
-                string.IsNullOrEmpty(servicioUsername) || string.IsNullOrEmpty(servicioPassword) || string.IsNullOrEmpty(codigoCobroServicio) ||
-                string.IsNullOrEmpty(Properties.Settings.Default["NombreRemitente"].ToString()))
+            List<string> propiedades = new()
             {
-                _ = MessageBox.Show("Se deben configurar las credenciales para el correcto funcionamiento de la aplicación", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Preferences settingsForm = new(displayIcon: true);
-                _ = settingsForm.ShowDialog();
+                "WoocommerceEndpoint",
+                "WoocomerceConsumerKey",
+                "WoocommerceSecretKey",
+                "MysqlHost",
+                "MysqlUser",
+                "MysqlPassword",
+                "MysqlDatabase",
+                "UrlMunicipios",
+                "UsuarioMunicipios",
+                "PasswordMunicipios",
+                "CodigoCobroMunicipios",
+                "UrlTomaServicio",
+                "UrlEliminarGuia",
+                "UsuarioTomaServicio",
+                "PasswordTomaServicio",
+                "CodigoCobroTomaServicio",
+                "NombreRemitente",
+                "TelefonoRemitente",
+            };
+
+            foreach (string propiedad in propiedades)
+            {
+                if (string.IsNullOrEmpty(Properties.Settings.Default[propiedad].ToString()))
+                {
+                    _ = MessageBox.Show("La aplicación no está configurada correctamente, realice las configuraciones necesarias en el área de preferencias.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Preferences settingsForm = new(displayIcon: false);
+                    settingsForm.ShowDialog();
+                    break;
+                }
             }
         }
 

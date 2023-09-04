@@ -1,5 +1,6 @@
 ﻿namespace GuatexWoocommerce
 {
+    using System.Drawing;
     partial class GuatexSendings
     {
         /// <summary>

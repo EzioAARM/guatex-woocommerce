@@ -28,11 +28,13 @@ namespace GuatexWoocommerce
                 ("CodigoCobroMunicipios", txtCodigoCobroMunicipios),
 
                 ("UrlTomaServicio", txtUrlTomarServicio),
+                ("UrlEliminarGuia", txtUrlEliminarGuia),
                 ("UsuarioTomaServicio", txtUsernameServicio),
                 ("PasswordTomaServicio", txtPasswordServicio),
                 ("CodigoCobroTomaServicio", txtCodigoCobroServicio),
 
                 ("NombreRemitente", txtNombreRemitente),
+                ("TelefonoRemitente", txtTelefonoRemitente),
             };
             Height = 500;
 

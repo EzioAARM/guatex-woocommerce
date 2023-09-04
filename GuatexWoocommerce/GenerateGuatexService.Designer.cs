@@ -1,5 +1,6 @@
 ﻿namespace GuatexWoocommerce
 {
+    using System.Drawing;
     partial class GenerateGuatexService
     {
         /// <summary>
@@ -80,11 +81,20 @@
             label16 = new Label();
             cmbSendFrom = new ComboBox();
             label19 = new Label();
+            generate_panel = new Panel();
+            imagenGuia = new PictureBox();
+            btnVerGuia = new Button();
+            btnCancelarGuia = new Button();
+            btnImprimirGuia = new Button();
+            panelGuia = new Panel();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvOrderItems).BeginInit();
             groupBox2.SuspendLayout();
+            generate_panel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)imagenGuia).BeginInit();
+            panelGuia.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
@@ -113,7 +123,7 @@
             // statusStrip1
             // 
             statusStrip1.Items.AddRange(new ToolStripItem[] { lblStatus, pb_loader });
-            statusStrip1.Location = new Point(0, 723);
+            statusStrip1.Location = new Point(0, 750);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(1199, 22);
             statusStrip1.TabIndex = 1;
@@ -315,7 +325,7 @@
             dgvOrderItems.Location = new Point(12, 451);
             dgvOrderItems.Name = "dgvOrderItems";
             dgvOrderItems.RowTemplate.Height = 25;
-            dgvOrderItems.Size = new Size(619, 258);
+            dgvOrderItems.Size = new Size(622, 282);
             dgvOrderItems.TabIndex = 31;
             // 
             // groupBox2
@@ -538,7 +548,7 @@
             // 
             lblDireccion.AutoSize = true;
             lblDireccion.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            lblDireccion.Location = new Point(702, 640);
+            lblDireccion.Location = new Point(61, 194);
             lblDireccion.Name = "lblDireccion";
             lblDireccion.Size = new Size(93, 25);
             lblDireccion.TabIndex = 36;
@@ -549,7 +559,7 @@
             txtDireccion.BackColor = SystemColors.ControlLightLight;
             txtDireccion.BorderStyle = BorderStyle.None;
             txtDireccion.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtDireccion.Location = new Point(812, 643);
+            txtDireccion.Location = new Point(171, 197);
             txtDireccion.Name = "txtDireccion";
             txtDireccion.Size = new Size(340, 22);
             txtDireccion.TabIndex = 37;
@@ -558,7 +568,7 @@
             // 
             label17.AutoSize = true;
             label17.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label17.Location = new Point(697, 599);
+            label17.Location = new Point(56, 153);
             label17.Name = "label17";
             label17.Size = new Size(98, 25);
             label17.TabIndex = 34;
@@ -568,7 +578,7 @@
             // 
             label18.AutoSize = true;
             label18.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label18.Location = new Point(657, 558);
+            label18.Location = new Point(16, 112);
             label18.Name = "label18";
             label18.Size = new Size(138, 25);
             label18.TabIndex = 32;
@@ -580,7 +590,7 @@
             cmbDepartamento.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             cmbDepartamento.FormattingEnabled = true;
             cmbDepartamento.ImeMode = ImeMode.Off;
-            cmbDepartamento.Location = new Point(812, 558);
+            cmbDepartamento.Location = new Point(171, 112);
             cmbDepartamento.Name = "cmbDepartamento";
             cmbDepartamento.Size = new Size(340, 29);
             cmbDepartamento.TabIndex = 38;
@@ -592,7 +602,7 @@
             cmbMunicipio.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             cmbMunicipio.FormattingEnabled = true;
             cmbMunicipio.ImeMode = ImeMode.Off;
-            cmbMunicipio.Location = new Point(812, 599);
+            cmbMunicipio.Location = new Point(171, 153);
             cmbMunicipio.Name = "cmbMunicipio";
             cmbMunicipio.Size = new Size(340, 29);
             cmbMunicipio.TabIndex = 39;
@@ -600,7 +610,7 @@
             // btnCrearActualizar
             // 
             btnCrearActualizar.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            btnCrearActualizar.Location = new Point(989, 671);
+            btnCrearActualizar.Location = new Point(348, 225);
             btnCrearActualizar.Name = "btnCrearActualizar";
             btnCrearActualizar.Size = new Size(163, 38);
             btnCrearActualizar.TabIndex = 40;
@@ -612,7 +622,7 @@
             // 
             cb_recogerOficina.AutoSize = true;
             cb_recogerOficina.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            cb_recogerOficina.Location = new Point(812, 495);
+            cb_recogerOficina.Location = new Point(171, 49);
             cb_recogerOficina.Name = "cb_recogerOficina";
             cb_recogerOficina.Size = new Size(205, 29);
             cb_recogerOficina.TabIndex = 41;
@@ -624,7 +634,7 @@
             // 
             label16.AutoSize = true;
             label16.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label16.Location = new Point(661, 460);
+            label16.Location = new Point(20, 14);
             label16.Name = "label16";
             label16.Size = new Size(135, 25);
             label16.TabIndex = 42;
@@ -636,7 +646,7 @@
             cmbSendFrom.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             cmbSendFrom.FormattingEnabled = true;
             cmbSendFrom.ImeMode = ImeMode.Off;
-            cmbSendFrom.Location = new Point(812, 460);
+            cmbSendFrom.Location = new Point(171, 14);
             cmbSendFrom.Name = "cmbSendFrom";
             cmbSendFrom.Size = new Size(340, 29);
             cmbSendFrom.TabIndex = 43;
@@ -645,38 +655,100 @@
             // 
             label19.AutoSize = true;
             label19.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
-            label19.Location = new Point(727, 529);
+            label19.Location = new Point(86, 83);
             label19.Name = "label19";
             label19.Size = new Size(61, 19);
             label19.TabIndex = 44;
             label19.Text = "Enviar a:";
+            // 
+            // generate_panel
+            // 
+            generate_panel.Controls.Add(label16);
+            generate_panel.Controls.Add(label19);
+            generate_panel.Controls.Add(label18);
+            generate_panel.Controls.Add(cmbSendFrom);
+            generate_panel.Controls.Add(label17);
+            generate_panel.Controls.Add(txtDireccion);
+            generate_panel.Controls.Add(cb_recogerOficina);
+            generate_panel.Controls.Add(lblDireccion);
+            generate_panel.Controls.Add(btnCrearActualizar);
+            generate_panel.Controls.Add(cmbDepartamento);
+            generate_panel.Controls.Add(cmbMunicipio);
+            generate_panel.Location = new Point(640, 451);
+            generate_panel.Name = "generate_panel";
+            generate_panel.Size = new Size(538, 282);
+            generate_panel.TabIndex = 45;
+            // 
+            // imagenGuia
+            // 
+            imagenGuia.BackgroundImageLayout = ImageLayout.Stretch;
+            imagenGuia.Location = new Point(13, 14);
+            imagenGuia.Name = "imagenGuia";
+            imagenGuia.Size = new Size(160, 260);
+            imagenGuia.TabIndex = 46;
+            imagenGuia.TabStop = false;
+            // 
+            // btnVerGuia
+            // 
+            btnVerGuia.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            btnVerGuia.Location = new Point(179, 235);
+            btnVerGuia.Name = "btnVerGuia";
+            btnVerGuia.Size = new Size(163, 38);
+            btnVerGuia.TabIndex = 46;
+            btnVerGuia.Text = "Ver guía";
+            btnVerGuia.UseVisualStyleBackColor = true;
+            btnVerGuia.Click += btn_ver_guia_Click;
+            // 
+            // btnCancelarGuia
+            // 
+            btnCancelarGuia.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            btnCancelarGuia.Location = new Point(179, 191);
+            btnCancelarGuia.Name = "btnCancelarGuia";
+            btnCancelarGuia.Size = new Size(163, 38);
+            btnCancelarGuia.TabIndex = 47;
+            btnCancelarGuia.Text = "Cancelar guía";
+            btnCancelarGuia.UseVisualStyleBackColor = true;
+            btnCancelarGuia.Click += btnCancelarGuia_Click;
+            // 
+            // btnImprimirGuia
+            // 
+            btnImprimirGuia.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            btnImprimirGuia.Location = new Point(179, 147);
+            btnImprimirGuia.Name = "btnImprimirGuia";
+            btnImprimirGuia.Size = new Size(163, 38);
+            btnImprimirGuia.TabIndex = 48;
+            btnImprimirGuia.Text = "Imprimir guía";
+            btnImprimirGuia.UseVisualStyleBackColor = true;
+            btnImprimirGuia.Click += btnImprimirGuia_Click;
+            // 
+            // panelGuia
+            // 
+            panelGuia.Controls.Add(imagenGuia);
+            panelGuia.Controls.Add(btnImprimirGuia);
+            panelGuia.Controls.Add(btnCancelarGuia);
+            panelGuia.Controls.Add(btnVerGuia);
+            panelGuia.Location = new Point(640, 451);
+            panelGuia.Name = "panelGuia";
+            panelGuia.Size = new Size(361, 282);
+            panelGuia.TabIndex = 49;
+            panelGuia.Visible = false;
             // 
             // GenerateGuatexService
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
-            ClientSize = new Size(1199, 745);
-            Controls.Add(label19);
-            Controls.Add(cmbSendFrom);
-            Controls.Add(label16);
-            Controls.Add(cb_recogerOficina);
-            Controls.Add(btnCrearActualizar);
-            Controls.Add(cmbMunicipio);
-            Controls.Add(cmbDepartamento);
-            Controls.Add(lblDireccion);
-            Controls.Add(txtDireccion);
-            Controls.Add(label17);
-            Controls.Add(label18);
+            ClientSize = new Size(1199, 772);
+            Controls.Add(generate_panel);
             Controls.Add(dgvOrderItems);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Controls.Add(statusStrip1);
             Controls.Add(menuStrip1);
+            Controls.Add(panelGuia);
             MainMenuStrip = menuStrip1;
             Name = "GenerateGuatexService";
             Text = "GenerateGuatexService";
-            Load += GenerateGuatexService_Load;
             Shown += GenerateGuatexService_Shown;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
@@ -687,6 +759,10 @@
             ((System.ComponentModel.ISupportInitialize)dgvOrderItems).EndInit();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
+            generate_panel.ResumeLayout(false);
+            generate_panel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)imagenGuia).EndInit();
+            panelGuia.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -745,5 +821,11 @@
         private Label label16;
         private ComboBox cmbSendFrom;
         private Label label19;
+        private Panel generate_panel;
+        private PictureBox imagenGuia;
+        private Button btnVerGuia;
+        private Button btnCancelarGuia;
+        private Button btnImprimirGuia;
+        private Panel panelGuia;
     }
 }

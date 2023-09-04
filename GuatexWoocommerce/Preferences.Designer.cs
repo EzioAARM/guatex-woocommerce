@@ -1,5 +1,6 @@
 ﻿namespace GuatexWoocommerce
 {
+    using System.Drawing;
     partial class Preferences
     {
         /// <summary>
@@ -66,14 +67,18 @@
             txtUrlTomarServicio = new TextBox();
             label12 = new Label();
             groupBox1 = new GroupBox();
+            txtTelefonoRemitente = new TextBox();
+            label17 = new Label();
+            txtNombreRemitente = new TextBox();
+            label16 = new Label();
             txtCodigoCobroServicio = new TextBox();
             label13 = new Label();
             txtPasswordServicio = new TextBox();
             label14 = new Label();
             txtUsernameServicio = new TextBox();
             label15 = new Label();
-            txtNombreRemitente = new TextBox();
-            label16 = new Label();
+            label18 = new Label();
+            txtUrlEliminarGuia = new TextBox();
             woocommerceSettings.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -146,7 +151,7 @@
             // 
             // btn_save
             // 
-            btn_save.Location = new Point(605, 1228);
+            btn_save.Location = new Point(605, 1391);
             btn_save.Name = "btn_save";
             btn_save.Size = new Size(75, 23);
             btn_save.TabIndex = 2;
@@ -156,7 +161,7 @@
             // 
             // btn_cancel
             // 
-            btn_cancel.Location = new Point(12, 1228);
+            btn_cancel.Location = new Point(12, 1391);
             btn_cancel.Name = "btn_cancel";
             btn_cancel.Size = new Size(75, 23);
             btn_cancel.TabIndex = 3;
@@ -329,7 +334,7 @@
             // 
             // statusStrip1
             // 
-            statusStrip1.Location = new Point(0, 1268);
+            statusStrip1.Location = new Point(0, 1432);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(704, 22);
             statusStrip1.SizingGrip = false;
@@ -396,6 +401,10 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(label18);
+            groupBox1.Controls.Add(txtUrlEliminarGuia);
+            groupBox1.Controls.Add(txtTelefonoRemitente);
+            groupBox1.Controls.Add(label17);
             groupBox1.Controls.Add(txtNombreRemitente);
             groupBox1.Controls.Add(label16);
             groupBox1.Controls.Add(txtCodigoCobroServicio);
@@ -408,14 +417,46 @@
             groupBox1.Controls.Add(txtUrlTomarServicio);
             groupBox1.Location = new Point(12, 858);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(668, 364);
+            groupBox1.Size = new Size(668, 509);
             groupBox1.TabIndex = 16;
             groupBox1.TabStop = false;
             groupBox1.Text = "Servicio de Guatex";
             // 
+            // txtTelefonoRemitente
+            // 
+            txtTelefonoRemitente.Location = new Point(29, 454);
+            txtTelefonoRemitente.Name = "txtTelefonoRemitente";
+            txtTelefonoRemitente.Size = new Size(611, 23);
+            txtTelefonoRemitente.TabIndex = 29;
+            // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.Location = new Point(29, 436);
+            label17.Name = "label17";
+            label17.Size = new Size(125, 15);
+            label17.TabIndex = 28;
+            label17.Text = "Teléfono del remitente";
+            // 
+            // txtNombreRemitente
+            // 
+            txtNombreRemitente.Location = new Point(29, 390);
+            txtNombreRemitente.Name = "txtNombreRemitente";
+            txtNombreRemitente.Size = new Size(611, 23);
+            txtNombreRemitente.TabIndex = 27;
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Location = new Point(29, 372);
+            label16.Name = "label16";
+            label16.Size = new Size(124, 15);
+            label16.TabIndex = 26;
+            label16.Text = "Nombre del remitente";
+            // 
             // txtCodigoCobroServicio
             // 
-            txtCodigoCobroServicio.Location = new Point(29, 245);
+            txtCodigoCobroServicio.Location = new Point(29, 322);
             txtCodigoCobroServicio.Name = "txtCodigoCobroServicio";
             txtCodigoCobroServicio.Size = new Size(611, 23);
             txtCodigoCobroServicio.TabIndex = 25;
@@ -423,7 +464,7 @@
             // label13
             // 
             label13.AutoSize = true;
-            label13.Location = new Point(29, 227);
+            label13.Location = new Point(29, 304);
             label13.Name = "label13";
             label13.Size = new Size(96, 15);
             label13.TabIndex = 24;
@@ -431,7 +472,7 @@
             // 
             // txtPasswordServicio
             // 
-            txtPasswordServicio.Location = new Point(29, 181);
+            txtPasswordServicio.Location = new Point(29, 258);
             txtPasswordServicio.Name = "txtPasswordServicio";
             txtPasswordServicio.PasswordChar = '*';
             txtPasswordServicio.Size = new Size(611, 23);
@@ -440,7 +481,7 @@
             // label14
             // 
             label14.AutoSize = true;
-            label14.Location = new Point(29, 163);
+            label14.Location = new Point(29, 240);
             label14.Name = "label14";
             label14.Size = new Size(67, 15);
             label14.TabIndex = 22;
@@ -448,7 +489,7 @@
             // 
             // txtUsernameServicio
             // 
-            txtUsernameServicio.Location = new Point(29, 117);
+            txtUsernameServicio.Location = new Point(29, 194);
             txtUsernameServicio.Name = "txtUsernameServicio";
             txtUsernameServicio.Size = new Size(611, 23);
             txtUsernameServicio.TabIndex = 21;
@@ -456,27 +497,27 @@
             // label15
             // 
             label15.AutoSize = true;
-            label15.Location = new Point(29, 99);
+            label15.Location = new Point(29, 176);
             label15.Name = "label15";
             label15.Size = new Size(109, 15);
             label15.TabIndex = 20;
             label15.Text = "Nombre de usuario";
             // 
-            // txtNombreRemitente
+            // label18
             // 
-            txtNombreRemitente.Location = new Point(29, 313);
-            txtNombreRemitente.Name = "txtNombreRemitente";
-            txtNombreRemitente.Size = new Size(611, 23);
-            txtNombreRemitente.TabIndex = 27;
+            label18.AutoSize = true;
+            label18.Location = new Point(29, 106);
+            label18.Name = "label18";
+            label18.Size = new Size(126, 15);
+            label18.TabIndex = 30;
+            label18.Text = "URL para eliminar guia";
             // 
-            // label16
+            // txtUrlEliminarGuia
             // 
-            label16.AutoSize = true;
-            label16.Location = new Point(29, 295);
-            label16.Name = "label16";
-            label16.Size = new Size(124, 15);
-            label16.TabIndex = 26;
-            label16.Text = "Nombre del remitente";
+            txtUrlEliminarGuia.Location = new Point(29, 124);
+            txtUrlEliminarGuia.Name = "txtUrlEliminarGuia";
+            txtUrlEliminarGuia.Size = new Size(611, 23);
+            txtUrlEliminarGuia.TabIndex = 31;
             // 
             // Preferences
             // 
@@ -484,7 +525,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
             AutoScrollMinSize = new Size(0, 500);
-            ClientSize = new Size(704, 1290);
+            ClientSize = new Size(704, 1454);
             Controls.Add(groupBox1);
             Controls.Add(statusStrip1);
             Controls.Add(menuStrip1);
@@ -564,5 +605,9 @@
         private Label label15;
         private TextBox txtNombreRemitente;
         private Label label16;
+        private TextBox txtTelefonoRemitente;
+        private Label label17;
+        private Label label18;
+        private TextBox txtUrlEliminarGuia;
     }
 }
