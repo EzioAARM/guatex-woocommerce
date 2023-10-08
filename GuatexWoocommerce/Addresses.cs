@@ -190,6 +190,10 @@ namespace GuatexWoocommerce
             Destino destino = MunicipiosEncontrados.Destinos
                 .Where(x => x.Departamento == departamento && x.Nombre == municipio)
                 .FirstOrDefault();
+            if (destino == null)
+            {
+                return;
+            }
             txtViewCodigo.Text = destino.Codigo.ToString();
             txtViewNombre.Text = destino.Nombre;
             txtViewPuntoCobertura.Text = destino.PuntoCobertura;
@@ -201,7 +205,7 @@ namespace GuatexWoocommerce
         }
 
         private async Task CrearDireccion(string name, string phone, string fullAddress, string department,
-            int departmentId, string municipality, int municipalityId)
+            int departmentId, string municipality, int municipalityId, string puntoCobertura)
         {
             var runningTask = Task.Run(() =>
             {
@@ -219,6 +223,7 @@ namespace GuatexWoocommerce
                     DepartmentId = departmentId,
                     Municipality = municipality,
                     MunicipalityId = municipalityId,
+                    PuntoCobertura = puntoCobertura
                 });
                 _ = Program._context.SaveChanges();
             });
@@ -234,7 +239,7 @@ namespace GuatexWoocommerce
         }
 
         private async Task ActualizarDireccion(int id, string name, string phone, string fullAddress, string department,
-            int departmentId, string municipality, int municipalityId)
+            int departmentId, string municipality, int municipalityId, string puntoCobertura)
         {
             var runningTask = Task.Run(() =>
             {
@@ -251,6 +256,7 @@ namespace GuatexWoocommerce
                 address.DepartmentId = departmentId;
                 address.Municipality = municipality;
                 address.MunicipalityId = municipalityId;
+                address.PuntoCobertura = puntoCobertura;
                 _ = Program._context.Addresses.Update(address);
                 _ = Program._context.SaveChanges();
             });
@@ -309,7 +315,7 @@ namespace GuatexWoocommerce
                 _ = MessageBox.Show("El municipio es requerido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (txtId.Text == "" && txtId.Visible)
+            if (txtId.Text == "" && !txtId.Visible)
             {
                 SetLoading(true, "Creando dirección");
                 string name = txtAddressName.Text;
@@ -327,7 +333,12 @@ namespace GuatexWoocommerce
                     .Where(x => x.Departamento.Equals(cmbAddressDepartamento.Text) && x.Nombre.Equals(cmbAddressMunicipio.Text))
                     .FirstOrDefault()
                     .Muni;
-                await Task.Run(() => CrearDireccion(name, phone, fullAddress, department, departmentId, municipality, municipalityId));
+                string puntoCobertura = MunicipiosEncontrados.Destinos
+                    .Where(x => !string.IsNullOrEmpty(x.Departamento) && !string.IsNullOrEmpty(x.Nombre))
+                    .Where(x => x.Departamento.Equals(cmbAddressDepartamento.Text) && x.Nombre.Equals(cmbAddressMunicipio.Text))
+                    .FirstOrDefault()
+                    .PuntoCobertura;
+                await Task.Run(() => CrearDireccion(name, phone, fullAddress, department, departmentId, municipality, municipalityId, puntoCobertura));
                 Address[] addressList = await Task.Run(() =>
                 {
                     return Program._context
@@ -355,7 +366,12 @@ namespace GuatexWoocommerce
                     .Where(x => x.Departamento.Equals(cmbAddressDepartamento.Text) && x.Nombre.Equals(cmbAddressMunicipio.Text))
                     .FirstOrDefault()
                     .Muni;
-                await Task.Run(() => ActualizarDireccion(id, name, phone, fullAddress, department, departmentId, municipality, municipalityId));
+                string puntoCobertura = MunicipiosEncontrados.Destinos
+                    .Where(x => !string.IsNullOrEmpty(x.Departamento) && !string.IsNullOrEmpty(x.Nombre))
+                    .Where(x => x.Departamento.Equals(cmbAddressDepartamento.Text) && x.Nombre.Equals(cmbAddressMunicipio.Text))
+                    .FirstOrDefault()
+                    .PuntoCobertura;
+                await Task.Run(() => ActualizarDireccion(id, name, phone, fullAddress, department, departmentId, municipality, municipalityId, puntoCobertura));
                 Address[] addressList = await Task.Run(() =>
                 {
                     return Program._context

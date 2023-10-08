@@ -54,6 +54,10 @@ namespace GuatexWoocommerce.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("PuntoCobertura")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -76,6 +80,14 @@ namespace GuatexWoocommerce.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("CodigoCobro")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CodigoDestino")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CodigoOrigen")
                         .IsRequired()
                         .HasColumnType("longtext");
 

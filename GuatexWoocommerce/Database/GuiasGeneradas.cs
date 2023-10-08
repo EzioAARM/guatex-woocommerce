@@ -22,6 +22,18 @@ namespace GuatexWoocommerce.Database
         public ulong IdOrden { get; set; }
 
         /// <summary>
+        /// Código de origen del municipio de Guatex
+        /// </summary>
+        [Required]
+        public string CodigoOrigen { get; set; }
+
+        /// <summary>
+        /// Código de destino del municipio de Guatex
+        /// </summary>
+        [Required]
+        public string CodigoDestino { get; set; }
+
+        /// <summary>
         /// Número de la guía de Guatex
         /// </summary>
         [Required]

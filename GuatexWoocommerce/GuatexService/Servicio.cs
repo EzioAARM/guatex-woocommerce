@@ -57,6 +57,7 @@ namespace GuatexWoocommerce.GuatexService
                                      <PUNTO_ORIGEN>A</PUNTO_ORIGEN>
                                      <ESTA_LISTO>S</ESTA_LISTO>
                                      <CODORIGEN>{idMunicipalityFrom}</CODORIGEN>
+                                     <DESCRIPCION_ENVIO>{description}</DESCRIPCION_ENVIO>
                                      <GUIA>
                                            <LLAVE_CLIENTE>{clientId}</LLAVE_CLIENTE>
                                            <CODIGO_COBRO_GUIA>{codigoCobroGuia}</CODIGO_COBRO_GUIA>

@@ -56,6 +56,13 @@ namespace GuatexWoocommerce.Database
         [ModelAttributes(IncludeInView = true, Width = 150, Position = 5, Title = "Municipio (Guatex)")]
         public string Municipality { get; set; }
 
+
+        /// <summary>
+        /// Punto de cobertura
+        /// </summary>
+        [Required]
+        public string PuntoCobertura { get; set; }
+
         /// <summary>
         /// Id of the municipality of the address
         /// </summary>

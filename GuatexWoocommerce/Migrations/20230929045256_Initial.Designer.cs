@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GuatexWoocommerce.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230902171508_EntidadParaGuias")]
-    partial class EntidadParaGuias
+    [Migration("20230929045256_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,6 +57,10 @@ namespace GuatexWoocommerce.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("PuntoCobertura")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -79,6 +83,14 @@ namespace GuatexWoocommerce.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("CodigoCobro")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CodigoDestino")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CodigoOrigen")
                         .IsRequired()
                         .HasColumnType("longtext");
 

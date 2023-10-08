@@ -3,6 +3,7 @@ using GuatexWoocommerce.GuatexService;
 using GuatexWoocommerce.Models;
 using GuatexWoocommerce.WoocommerceApi;
 using Microsoft.VisualBasic;
+using System.Drawing.Printing;
 using System.Net;
 using System.Reflection;
 
@@ -235,7 +236,9 @@ namespace GuatexWoocommerce
                     peso: _guiaEncontrada.PesoTotal,
                     forma_pago: _guiaEncontrada.FormaPago,
                     codigo_cobro: _guiaEncontrada.CodigoCobro,
-                    fecha: _guiaEncontrada.Fecha);
+                    fecha: _guiaEncontrada.Fecha,
+                    codigoOrigen: _guiaEncontrada.CodigoOrigen,
+                    codigoDestino: _guiaEncontrada.CodigoDestino);
             }
             SetLoading(false);
         }
@@ -316,10 +319,12 @@ namespace GuatexWoocommerce
                                 {
                                     throw new ArgumentException("El peso ingresado no es válido, generación de guía cancelada");
                                 }
+                                decimal weight = Convert.ToDecimal(peso) * Convert.ToInt32(x.Quantity);
+                                int weightInt = Convert.ToInt32(weight);
                                 var detalle = new LineaDetalleGuia()
                                 {
-                                    Cantidad = Convert.ToInt32(x.Quantity),
-                                    Peso = Convert.ToDecimal(peso),
+                                    Cantidad = 1,
+                                    Peso = weight > weightInt ? weightInt + 1 : weightInt,
                                     TipoEnvio = "2"
                                 };
                                 errorLines.Add($"{GenerateApiloDate()} Id: '{product.Id}', Producto: '{product.Name}', Peso: '{peso}', Cantidad: '{x.Quantity}'");
@@ -373,7 +378,7 @@ namespace GuatexWoocommerce
                             orderId: _order.Id.Value,
                             status: "completed");
                     errorLines.Add($"{GenerateApiloDate()} Actualización de estado de la orden: Ok");
-                    string note = $@"Su número de guía Guatex es: {servicioSolicitado.Codigo}, puede consultarla <a href='http://ws.guatex.gt/ConsultaWebPrm/Consultar.aspx?numerodeguia={servicioSolicitado.Codigo}'>aquí</a>.";
+                    string note = $@"Su número de guía Guatex es: {servicioSolicitado.Guias.First().Numero}, puede consultarla <a href='http://ws.guatex.gt/ConsultaWebPrm/Consultar.aspx?numerodeguia={servicioSolicitado.Codigo}'>aquí</a>.";
                     OrderRequest.AddNoteToOrder(
                             orderId: _order.Id.Value,
                             note: note);
@@ -383,20 +388,22 @@ namespace GuatexWoocommerce
                         IdOrden = _order.Id.Value,
                         NumeroGuia = $"{servicioSolicitado.Guias.First().Numero}",
                         Remitente = $"{Properties.Settings.Default["NombreRemitente"]}",
-                        DireccionRemitente = $"{sendFromAddress.FullAddress}",
+                        DireccionRemitente = $"{sendFromAddress.FullAddress}, {sendFromAddress.Municipality}, {sendFromAddress.Department}",
                         TelefonoRemitente = $"{Properties.Settings.Default["TelefonoRemitente"]}",
                         Destinatario = $"{firstName} {lastName}",
-                        DireccionDestinatario = $"{address}",
+                        DireccionDestinatario = $"{address}, {municipio.Municipio}, {municipio.Departamento}",
                         TelefonoDestinatario = $"{clientPhone}",
                         GuiaActual = $"1",
                         TotalGuias = $"1",
-                        DescripcionEnvio = $"{dgvOrderItems.Rows.Count} Productos",
-                        CantidadPiezas = $"{detalleGuia.Count()}",
+                        DescripcionEnvio = txtOrderNote.Text,
+                        CantidadPiezas = $"1",
                         PesoTotal = $"{detalleGuia.Select(x => x.Peso).Sum()}",
-                        FormaPago = $"COBRO",
+                        FormaPago = $"CREDITO",
                         CodigoCobro = $"{Properties.Settings.Default["CodigoCobroTomaServicio"]}",
                         Fecha = $"{DateTime.Now:dd/MM/yyyy}",
-                        Anulada = false
+                        Anulada = false,
+                        CodigoDestino = municipio.PuntoCobertura,
+                        CodigoOrigen = sendFromAddress.PuntoCobertura
                     };
                     Program._context.Guias.Add(guiaGenerada);
                     Program._context.SaveChanges();
@@ -415,8 +422,28 @@ namespace GuatexWoocommerce
                 }
                 finally
                 {
+                    _guiaEncontrada = Program._context.Guias.FirstOrDefault(x => x.IdOrden == _orderId && !x.Anulada);
+                    generate_panel.Visible = false;
+                    panelGuia.Visible = true;
+                    GeneratePlz(
+                        numero_guia: _guiaEncontrada.NumeroGuia,
+                        remitente: _guiaEncontrada.Remitente,
+                        direccion_remitente: _guiaEncontrada.DireccionRemitente,
+                        telefono_remitente: _guiaEncontrada.TelefonoRemitente,
+                        destinatario: _guiaEncontrada.Destinatario,
+                        direccion_destinatario: _guiaEncontrada.DireccionDestinatario,
+                        telefono_destinatario: _guiaEncontrada.TelefonoDestinatario,
+                        descripcion_envio: _guiaEncontrada.DescripcionEnvio,
+                        guia_actual: _guiaEncontrada.GuiaActual,
+                        total_guias: _guiaEncontrada.TotalGuias,
+                        cantidad_piezas: _guiaEncontrada.CantidadPiezas,
+                        peso: _guiaEncontrada.PesoTotal,
+                        forma_pago: _guiaEncontrada.FormaPago,
+                        codigo_cobro: _guiaEncontrada.CodigoCobro,
+                        fecha: _guiaEncontrada.Fecha,
+                        codigoOrigen: _guiaEncontrada.CodigoOrigen,
+                        codigoDestino: _guiaEncontrada.CodigoDestino);
                     Enabled = true;
-                    Close();
                 }
             }
         }
@@ -442,10 +469,18 @@ namespace GuatexWoocommerce
         private void GeneratePlz(string numero_guia, string remitente, string direccion_remitente, string telefono_remitente,
             string destinatario, string direccion_destinatario, string telefono_destinatario,
             string descripcion_envio, string guia_actual, string total_guias, string cantidad_piezas,
-            string peso, string forma_pago, string codigo_cobro, string fecha)
+            string peso, string forma_pago, string codigo_cobro, string fecha, string codigoOrigen, string codigoDestino)
         {
-            string plzText = @$"^XA^SZ2^PW609^LL1256^PON^PR6,6^PMN^MNY^LS-20^MTD^MMT,N^MPE^FS^JUS^LRN^CI0^FS^FO1,1,0^A0N,N,30,30^FD ^FS^FT1,160^BY3 ^A0N,40,30 ^BC,100,N,N,N,A^FD{numero_guia}^FS^FO3,170,0^AAN,N,15,15^FDCAP - {numero_guia}^FS^FO0,220,0^A0N,N,25,25^FDRemitente: {remitente} (CREDI^FS^FO0,245,0^A0N,N,25,25^FDTO)^FS^FO0,270,0^A0N,N,25,25^FH\\^FDDirecci\\A2n:{direccion_remitente}^FS^FO0,295,0^A0N,N,25,25^FH\\^FD{""}^FS^FO0,350,0^A0N,N,25,25^FH\\^FDTel\\82fono: {telefono_remitente}^FS^FO10,390,0^AAN,N,25,10^FD{numero_guia}^FS^FO340,350,0^IME:IMG.GRF,1,1^FS^FO0,475,0^A0N,N,25,25^FH\\^FDDestinatario: {destinatario}^FS^FO0,525,0^A0N,N,25,25^FH\\^FDDirecci\\A2n:{direccion_destinatario}^FS^FO0,600,0^A0N,N,25,25^FH\\^FDTel\\82fono: {telefono_destinatario}^FS^FO45,625,0^A0N,N,250,70^FDCAP^FS^LRY^FO230,1050,0^A0N,N,150,70^FD{guia_actual}/{total_guias}^FS^FO355,780,0^A0N,N,25,25^FD ^FS^FO10,830,0^A0N,N,20,24^FH\\^FDDesc. Env\\A1o: {descripcion_envio}^FS^FO0,930,0^A0N,N,24,24^FDNo. Piezas: {cantidad_piezas}   Peso: {peso}   Forma de pago :{forma_pago}   Co^FS^FO0,960,0^A0N,N,24,24^FDdigo de cobro:{codigo_cobro}   Fecha:   {fecha}^FS^FO0,1010,0^BQ,2,7^FDQA,{numero_guia}|CAP^FS^FWN^XZ";
-            string endpoint = $"http://api.labelary.com/v1/printers/8dpmm/labels/4x6/0/{plzText}";
+            if (direccion_destinatario.Length > 35)
+            {
+                direccion_destinatario = direccion_destinatario.Insert(35, "^FS^FO0,550,0^A0N,N,25,25^FH\\^FD");
+            }
+            if (direccion_remitente.Length > 35)
+            {
+                direccion_remitente = direccion_remitente.Insert(35, "^FS^FO0,295,0^A0N,N,25,25^FH\\^FD");
+            }
+            string plzText = @$"^XA^SZ2^PW609^LL1256^PON^PR6,6^PMN^MNY^LS-20^MTD^MMT,N^MPE^FS^JUS^LRN^CI0^FS^FO1,1,0^A0N,N,30,30^FD ^FS^FT1,160^BY3 ^A0N,40,30 ^BC,100,N,N,N,A^FD{numero_guia}^FS^FO3,170,0^AAN,N,15,15^FD{codigoOrigen} - {numero_guia}^FS^FO0,220,0^A0N,N,25,25^FDRemitente: {remitente} (CREDI^FS^FO0,245,0^A0N,N,25,25^FDTO)^FS^FO0,270,0^A0N,N,25,25^FH\\^FDDirección:{direccion_remitente}^FS^FO0,295,0^A0N,N,25,25^FH\\^FD{""}^FS^FO0,350,0^A0N,N,25,25^FH\\^FDTel\\82fono: {telefono_remitente}^FS^FO10,390,0^AAN,N,25,10^FD{numero_guia}^FS^FO340,350,0^IME:IMG.GRF,1,1^FS^FO0,475,0^A0N,N,25,25^FH\\^FDDestinatario: {destinatario}^FS^FO0,525,0^A0N,N,25,25^FH\\^FDDireccion:{direccion_destinatario}^FS^FO0,600,0^A0N,N,25,25^FH\\^FDTel\\82fono: {telefono_destinatario}^FS^FO45,625,0^A0N,N,250,70^FD{codigoDestino}^FS^LRY^FO230,1050,0^A0N,N,150,70^FD{guia_actual}/{total_guias}^FS^FO355,780,0^A0N,N,25,25^FD ^FS^FO10,830,0^A0N,N,20,24^FH\\^FDDesc. Env\\A1o: {descripcion_envio}^FS^FO0,930,0^A0N,N,24,24^FDNo. Piezas: {cantidad_piezas}   Peso: {peso}   Forma de pago :{forma_pago}   Co^FS^FO0,960,0^A0N,N,24,24^FDdigo de cobro:{codigo_cobro}   Fecha:   {fecha}^FS^FO0,1010,0^BQ,2,7^FDQA,{numero_guia}|{codigoDestino}^FS^FWN^XZ";
+            string endpoint = $"http://api.labelary.com/v1/printers/8dpmm/labels/3x6/0/{plzText}";
 
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(endpoint);
             HttpWebResponse response = (HttpWebResponse)req.GetResponse();
@@ -492,18 +527,24 @@ namespace GuatexWoocommerce
 
         private void btnImprimirGuia_Click(object sender, EventArgs e)
         {
-            ChromePdfRenderer Renderer = new();
-            using PdfDocument Pdf = Renderer.RenderUrlAsPdf($"{Directory.GetCurrentDirectory()}\\guias\\{_guiaEncontrada.NumeroGuia}.png");
-
+            PrintDocument pd = new();
+            pd.PrintPage += PrintPage;
+            pd.DefaultPageSettings.PaperSize = new PaperSize("Custom", 609, 1256);
             PrintDialog printDialog = new()
             {
-                Document = Pdf.GetPrintDocument(),
-                AllowSomePages = false
+                Document = pd,
+                AllowSomePages = false,
             };
             if (printDialog.ShowDialog() == DialogResult.OK)
             {
-                Pdf.Print();
+                pd.Print();
             }
+        }
+        private void PrintPage(object o, PrintPageEventArgs e)
+        {
+            System.Drawing.Image img = System.Drawing.Image.FromFile($"{Directory.GetCurrentDirectory()}\\guias\\{_guiaEncontrada.NumeroGuia}.png");
+            System.Drawing.Point loc = new(0, 0);
+            e.Graphics.DrawImage(img, loc);
         }
 
         private void btnCancelarGuia_Click(object sender, EventArgs e)
