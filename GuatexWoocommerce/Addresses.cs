@@ -199,7 +199,7 @@ namespace GuatexWoocommerce
             txtViewPuntoCobertura.Text = destino.PuntoCobertura;
             txtViewTipoTarifa.Text = destino.TipoTarifa;
             txtViewDepartamento.Text = $"{destino.Departamento} ({destino.Depto})";
-            txtViewMunicipio.Text = $"{destino.Municipio} ({destino.Muni})";
+            txtViewMunicipio.Text = $"{destino.Municipio} ({destino.Codigo})";
             txtViewFrecuenciaVisita.Text = destino.FrecuenciaVisita;
             pbViewRecogeOficina.BackColor = destino.RecogeOficina ? System.Drawing.Color.Green : System.Drawing.Color.Red;
         }
@@ -328,11 +328,11 @@ namespace GuatexWoocommerce
                     .FirstOrDefault()
                     .Depto;
                 string municipality = cmbAddressMunicipio.Text;
-                int municipalityId = (int)MunicipiosEncontrados.Destinos
+                int municipalityId = MunicipiosEncontrados.Destinos
                     .Where(x => !string.IsNullOrEmpty(x.Departamento) && !string.IsNullOrEmpty(x.Nombre))
                     .Where(x => x.Departamento.Equals(cmbAddressDepartamento.Text) && x.Nombre.Equals(cmbAddressMunicipio.Text))
                     .FirstOrDefault()
-                    .Muni;
+                    .Codigo;
                 string puntoCobertura = MunicipiosEncontrados.Destinos
                     .Where(x => !string.IsNullOrEmpty(x.Departamento) && !string.IsNullOrEmpty(x.Nombre))
                     .Where(x => x.Departamento.Equals(cmbAddressDepartamento.Text) && x.Nombre.Equals(cmbAddressMunicipio.Text))
@@ -361,11 +361,11 @@ namespace GuatexWoocommerce
                     .FirstOrDefault()
                     .Depto;
                 string municipality = cmbAddressMunicipio.Text;
-                int municipalityId = (int)MunicipiosEncontrados.Destinos
+                int municipalityId = MunicipiosEncontrados.Destinos
                     .Where(x => !string.IsNullOrEmpty(x.Departamento) && !string.IsNullOrEmpty(x.Nombre))
                     .Where(x => x.Departamento.Equals(cmbAddressDepartamento.Text) && x.Nombre.Equals(cmbAddressMunicipio.Text))
                     .FirstOrDefault()
-                    .Muni;
+                    .Codigo;
                 string puntoCobertura = MunicipiosEncontrados.Destinos
                     .Where(x => !string.IsNullOrEmpty(x.Departamento) && !string.IsNullOrEmpty(x.Nombre))
                     .Where(x => x.Departamento.Equals(cmbAddressDepartamento.Text) && x.Nombre.Equals(cmbAddressMunicipio.Text))

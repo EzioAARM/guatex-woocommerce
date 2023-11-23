@@ -336,6 +336,14 @@ namespace GuatexWoocommerce
                             }
                         })
                         .ToList();
+                    LineaDetalleGuia finalDetalleGuia = new()
+                    {
+                        Cantidad = 1,
+                        Peso = detalleGuia.Select(x => x.Peso).Sum(),
+                        TipoEnvio = "2"
+                    };
+                    detalleGuia.Clear();
+                    detalleGuia.Add(finalDetalleGuia);
                     Servicio servicio = new();
                     var sendFromAddress = Program._context.Addresses.Single(x => x.Name.Equals(cmbSendFrom.Text));
                     errorLines.Add($"{GenerateApiloDate()} Enviado desde: '{sendFromAddress.Name}'");
@@ -359,7 +367,7 @@ namespace GuatexWoocommerce
                             codigoCobroGuia: Properties.Settings.Default["CodigoCobroTomaServicio"].ToString(),
                             clientName: $"{firstName} {lastName}",
                             clientPhone: clientPhone,
-                            clientFullAddress: address,
+                            clientFullAddress: $"{address}, {municipio.Municipio}, {municipio.Departamento}",
                             clientMunicipalityId: municipio.Codigo,
                             description: orderNote,
                             pickInOffice: pickInOffice,
