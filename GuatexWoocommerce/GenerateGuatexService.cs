@@ -361,7 +361,7 @@ namespace GuatexWoocommerce
                     {
                         GuatexSolicitudServicio requestedService = servicio.Solicitar(
                             addressPhone: $"{Properties.Settings.Default["TelefonoRemitente"]}",
-                            sendFromAddress: sendFromAddress.FullAddress,
+                            sendFromAddress: $"{sendFromAddress.FullAddress}, {sendFromAddress.Municipality}, {sendFromAddress.Department}",
                             idMunicipalityFrom: sendFromAddress.MunicipalityId,
                             clientId: clientId,
                             codigoCobroGuia: Properties.Settings.Default["CodigoCobroTomaServicio"].ToString(),
@@ -487,19 +487,27 @@ namespace GuatexWoocommerce
             {
                 direccion_remitente = direccion_remitente.Insert(35, "^FS^FO0,295,0^A0N,N,25,25^FH\\^FD");
             }
-            string plzText = @$"^XA^SZ2^PW609^LL1256^PON^PR6,6^PMN^MNY^LS-20^MTD^MMT,N^MPE^FS^JUS^LRN^CI0^FS^FO1,1,0^A0N,N,30,30^FD ^FS^FT1,160^BY3 ^A0N,40,30 ^BC,100,N,N,N,A^FD{numero_guia}^FS^FO3,170,0^AAN,N,15,15^FD{codigoOrigen} - {numero_guia}^FS^FO0,220,0^A0N,N,25,25^FDRemitente: {remitente} (CREDI^FS^FO0,245,0^A0N,N,25,25^FDTO)^FS^FO0,270,0^A0N,N,25,25^FH\\^FDDirección:{direccion_remitente}^FS^FO0,295,0^A0N,N,25,25^FH\\^FD{""}^FS^FO0,350,0^A0N,N,25,25^FH\\^FDTel\\82fono: {telefono_remitente}^FS^FO10,390,0^AAN,N,25,10^FD{numero_guia}^FS^FO340,350,0^IME:IMG.GRF,1,1^FS^FO0,475,0^A0N,N,25,25^FH\\^FDDestinatario: {destinatario}^FS^FO0,525,0^A0N,N,25,25^FH\\^FDDireccion:{direccion_destinatario}^FS^FO0,600,0^A0N,N,25,25^FH\\^FDTel\\82fono: {telefono_destinatario}^FS^FO45,625,0^A0N,N,250,70^FD{codigoDestino}^FS^LRY^FO230,1050,0^A0N,N,150,70^FD{guia_actual}/{total_guias}^FS^FO355,780,0^A0N,N,25,25^FD ^FS^FO10,830,0^A0N,N,20,24^FH\\^FDDesc. Env\\A1o: {descripcion_envio}^FS^FO0,930,0^A0N,N,24,24^FDNo. Piezas: {cantidad_piezas}   Peso: {peso}   Forma de pago :{forma_pago}   Co^FS^FO0,960,0^A0N,N,24,24^FDdigo de cobro:{codigo_cobro}   Fecha:   {fecha}^FS^FO0,1010,0^BQ,2,7^FDQA,{numero_guia}|{codigoDestino}^FS^FWN^XZ";
-            string endpoint = $"http://api.labelary.com/v1/printers/8dpmm/labels/3x6/0/{plzText}";
 
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(endpoint);
-            HttpWebResponse response = (HttpWebResponse)req.GetResponse();
+            try
+            {
+                string plzText = @$"^XA^SZ2^PW609^LL1256^PON^PR6,6^PMN^MNY^LS-20^MTD^MMT,N^MPE^FS^JUS^LRN^CI0^FS^FO1,1,0^A0N,N,30,30^FD ^FS^FT1,160^BY3 ^A0N,40,30 ^BC,100,N,N,N,A^FD{numero_guia}^FS^FO3,170,0^AAN,N,15,15^FD{codigoOrigen} - {numero_guia}^FS^FO0,220,0^A0N,N,25,25^FDRemitente: {remitente} (CREDI^FS^FO0,245,0^A0N,N,25,25^FDTO)^FS^FO0,270,0^A0N,N,25,25^FH\\^FDDirección:{direccion_remitente}^FS^FO0,295,0^A0N,N,25,25^FH\\^FD{""}^FS^FO0,350,0^A0N,N,25,25^FH\\^FDTel\\82fono: {telefono_remitente}^FS^FO10,390,0^AAN,N,25,10^FD{numero_guia}^FS^FO340,350,0^IME:IMG.GRF,1,1^FS^FO0,475,0^A0N,N,25,25^FH\\^FDDestinatario: {destinatario}^FS^FO0,525,0^A0N,N,25,25^FH\\^FDDireccion:{direccion_destinatario}^FS^FO0,600,0^A0N,N,25,25^FH\\^FDTel\\82fono: {telefono_destinatario}^FS^FO45,625,0^A0N,N,250,70^FD{codigoDestino}^FS^LRY^FO230,1050,0^A0N,N,150,70^FD{guia_actual}/{total_guias}^FS^FO355,780,0^A0N,N,25,25^FD ^FS^FO10,830,0^A0N,N,20,24^FH\\^FDDesc. Env\\A1o: {descripcion_envio}^FS^FO0,930,0^A0N,N,24,24^FDNo. Piezas: {cantidad_piezas}   Peso: {peso}   Forma de pago :{forma_pago}   Co^FS^FO0,960,0^A0N,N,24,24^FDdigo de cobro:{codigo_cobro}   Fecha:   {fecha}^FS^FO0,1010,0^BQ,2,7^FDQA,{numero_guia}|{codigoDestino}^FS^FWN^XZ";
+                string endpoint = $"http://api.labelary.com/v1/printers/8dpmm/labels/3x6/0/{plzText}";
 
-            Stream stream = response.GetResponseStream();
-            System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
-            imagenGuia.BackgroundImage = img;
-            if (!Directory.Exists("guias"))
-                Directory.CreateDirectory("guias");
-            img.Save($"guias\\{numero_guia}.png");
-            stream.Close();
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(endpoint);
+                HttpWebResponse response = (HttpWebResponse)req.GetResponse();
+
+                Stream stream = response.GetResponseStream();
+                System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
+                imagenGuia.BackgroundImage = img;
+                if (!Directory.Exists("guias"))
+                    Directory.CreateDirectory("guias");
+                img.Save($"guias\\{numero_guia}.png");
+                stream.Close();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Hubo un error generando la guía, intente nuevamente en unos momentos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void cmbDepartamento_SelectedIndexChanged(object sender, EventArgs e)
