@@ -22,7 +22,7 @@ namespace GuatexWoocommerce
                 (string host, string user, string password, string database) = Program.GetMysqlSettings();
                 _ = optionsBuilder
                     .UseMySql($"server={host};database={database};uid={user};pwd={password}",
-                        new MySqlServerVersion(new Version(8, 0, 31)),
+                    new MySqlServerVersion(new Version(8, 0, 31)),
                         builder =>
                         {
                             _ = builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);

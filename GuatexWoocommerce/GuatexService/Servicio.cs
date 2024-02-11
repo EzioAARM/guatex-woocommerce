@@ -37,7 +37,7 @@ namespace GuatexWoocommerce.GuatexService
                         </LINEA_DETALLE_GUIA>";
                 }
                 string tomaDeServicio = $@"
-                <soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:ser=""http://servicio.wstomaservicios.guatex.com/"">
+                <soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:ser=""http://servicio.wstomaservicioscodimp.guatex.com/"">
                    <soapenv:Header/>
                    <soapenv:Body>
                       <ser:tomaServicioGTX>
